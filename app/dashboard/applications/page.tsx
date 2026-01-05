@@ -1,24 +1,49 @@
-import React from 'react'
+'use client';
+import React, { useState } from 'react'
 import Card from '@/app/components/Card'
 import { FiUsers, FiCheckCircle, FiCalendar} from 'react-icons/fi'
-import ApplicationCard from '@/app/components/applications/ApplicationCard'
+import ApplicationCard, { Status } from '@/app/components/applications/ApplicationCard';
 
+type JobApplication = {
+  id: string;
+  logo: string;
+  job_title: string;
+  company_name: string;
+  date_of_application: string;
+  status: Status;
+};
 
-const jobApplications = [
-  { id: '1', logo:"W", job_title: "Frontend Engineer", company_name: 'Webase LTD', date_of_application: "02-10-2025", status: "Applied",status_color: 'text-blue-700',
-    status_bg_color: 'bg-blue-100', },
-  {id: '1', logo:"W", job_title: "Backend Engineer", company_name: 'Snowflake', date_of_application: "02-11-2025", status: "Rejected", status_color: 'text-blue-700',
-    status_bg_color: 'bg-blue-100', },
-  { id: '1', logo:"W", job_title: "Backend Engineer", company_name: 'Samsung', date_of_application: "07-10-2025", status: "Withdrawn" , status_color: 'text-blue-700',
-    status_bg_color: 'bg-blue-100',},
-  { id: '1', logo:"W", job_title: "Database Engineer", company_name: 'Databricks', date_of_application: "04-23-2025", status: "Offer",    status_color: 'text-blue-700',
-    status_bg_color: 'bg-blue-100',},
-  { id: '1', logo:"W", job_title: "UI Engineer", company_name: 'Google', date_of_application: "02-10-2025", status: "Applied" ,    status_color: 'text-blue-700',
-    status_bg_color: 'bg-blue-100',},
+const jobApplications:JobApplication[] = [
+  { id: '1', logo:"W", job_title: "Frontend Engineer", company_name: 'Webase LTD', date_of_application: "02-10-2025", status: "applied"},
+  {id: '1', logo:"W", job_title: "Backend Engineer", company_name: 'Snowflake', date_of_application: "02-11-2025", status: "rejected"},
+  { id: '1', logo:"W", job_title: "Backend Engineer", company_name: 'Samsung', date_of_application: "07-10-2025", status: "withdrawn" },
+  { id: '1', logo:"W", job_title: "Database Engineer", company_name: 'Databricks', date_of_application: "04-23-2025", status: "offer"},
+  { id: '1', logo: "W", job_title: "UI Engineer", company_name: 'Google', date_of_application: "02-10-2025", status: "applied" },
+  { id: '1', logo:"W", job_title: "Frontend Engineer", company_name: 'Webase LTD', date_of_application: "02-10-2025", status: "applied"},
+  {id: '1', logo:"W", job_title: "Backend Engineer", company_name: 'Snowflake', date_of_application: "02-11-2025", status: "rejected"},
+  { id: '1', logo:"W", job_title: "Backend Engineer", company_name: 'Samsung', date_of_application: "07-10-2025", status: "withdrawn" },
+  { id: '1', logo:"W", job_title: "Database Engineer", company_name: 'Databricks', date_of_application: "04-23-2025", status: "offer"},
+  { id: '1', logo: "W", job_title: "UI Engineer", company_name: 'Google', date_of_application: "02-10-2025", status: "applied" },
+    { id: '1', logo:"W", job_title: "UI Engineer", company_name: 'Google', date_of_application: "02-10-2025", status: "interview"},
+
 
 ]
 
 const page = () => {
+  const [visibleCount, setVisibleCount] = useState(4);
+  const [selectedStatus, setSelectedStatus] = useState('all');
+
+
+  const loadMore = () => {
+    setVisibleCount((prev) => prev + 4);
+  }
+
+  const handleChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
+    setSelectedStatus(e.target.value);
+  }
+
+  const filteredApplications = selectedStatus == 'all' ? jobApplications : jobApplications.filter((application) => application.status === selectedStatus);
+
   return (
       <div className='flex flex-col gap-3'>
       <h1>Applications</h1>
@@ -37,9 +62,9 @@ const page = () => {
       </section>
       <section className='flex justify-between '>
         <input type="text" name="search" id="search" placeholder='Search by company or role ...' className='p-2  border rounded w-3/4' />
-        <select name="status" id="status" className='border rounded'>
+        <select name="status" id="status" className='border rounded' onChange={handleChange}>
           <option value="all"> All Statuses</option>
-          <option value="interviewing">Interviewing</option>
+          <option value="interview">Interviewing</option>
           <option value="applied">Applied</option>
           <option value="offer">Offer</option>
           <option value="rejected">Rejected</option>
@@ -48,7 +73,7 @@ const page = () => {
       </section>
       
       <section className='mt-3'>
-        {jobApplications.map((app, index) => (
+        {filteredApplications.slice(0,visibleCount).map((app, index) => (
           <ApplicationCard
             key={index}
         logo={app.logo}
@@ -56,11 +81,12 @@ const page = () => {
         company_name={app.company_name}
       date_of_application={app.date_of_application}
      status={app.status}
-     status_color={app.status_color}
-            status_bg_color={app.status_bg_color}
           />
         ))}
       </section>
+      {visibleCount < filteredApplications.length && (
+         <button type='button' className='p-2 text-white bg-blue-600 rounded w-max mx-auto cursor-pointer' onClick={loadMore}>Load More Applications</button>
+      )}
     </div>
   )
 }

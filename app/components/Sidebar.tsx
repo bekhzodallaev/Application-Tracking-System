@@ -9,8 +9,8 @@ import { LuChartBar } from 'react-icons/lu';
 
 const Sidebar = () => {
   return (
-      <div>
-          <div className='flex gap-1 h-screen w-96 flex-col p-4'>
+      <div className='relative'>
+          <div className='flex gap-1  w-96 flex-col p-4'>
               <div>
                    <div className='rounded-[50%] size-16 bg-blue-700'>
                  <img src="" alt="" />
@@ -38,7 +38,7 @@ const Sidebar = () => {
               Settings
           </Link>
             </div>
-          <div className=''>
+          <div className='fixed bottom-10 left-5 w-full'>
               <Link href="/signin" className='flex gap-2'>
                   <FiLogOut />
                   Log Out
