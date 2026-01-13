@@ -60,14 +60,14 @@ const page = () => {
       <div className='flex justify-between items-center'>
         <div>
           <h1 className='text-4xl'>Application Analytics</h1>
-      <p>Insight and performance metrics for your application pipeline</p>
+      <p className='text-lg mt-4 mb-4'>Insight and performance metrics for your application pipeline</p>
         </div>
         <button type='button' className='flex gap-2 rounded text-white bg-blue-400 items-center p-3'>
           <HiOutlineDownload />
           Export Report</button>
       </div>
 
-      <div className='flex flex-wrap gap-4'>
+      <div className='flex flex-wrap gap-4 justify-between'>
         <Card title="Total Applications" numOfApplications='321' percentage='23' bgColor="bg-blue-200">
            <FiUsers className='text-blue-600'/>
         </Card>
@@ -83,7 +83,7 @@ const page = () => {
         
       </div>  
       <div className='flex gap-4'>
-        <div className='border rounded p-3 relative mt-5 w-1/2'>
+        <div className='rounded shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] p-3 relative mt-5 w-1/2'>
           <h1>Application Funnel</h1>
       <ResponsiveContainer width="100%" height={250}>
       <BarChart
@@ -126,7 +126,7 @@ const page = () => {
       </BarChart>
     </ResponsiveContainer>
         </div> 
-        <div className='border rounded p-3 relative mt-5 w-1/2'>
+        <div className='rounded p-3 relative mt-5 w-1/2 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)]'>
           <h1>Application By Role</h1>
       <ResponsiveContainer width="100%" height={250}>
       <BarChart
@@ -171,7 +171,7 @@ const page = () => {
         </div>
       </div>
 
-      <div className='p-4 border rounded mt-4'>
+      <div className='p-4 rounded mt-4 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)]'>
         <h1>Average Time in Stage(Days)</h1>
 <ResponsiveContainer width="100%" height={300}>
   <BarChart data={avgTimeData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>

@@ -6,7 +6,11 @@ const pipelineData = {
     { title: "Software Engineer", company: "Tech Solutions LLC", date: "Oct 24"},
         { title: "UX Researcher", company: "Data Insights", date: "Oct 20" },
         { title: "UX Researcher", company: "Data Insights", date: "Oct 20"},
-        { title: "UX Researcher", company: "Data Insights", date: "Oct 20"},
+    { title: "UX Researcher", company: "Data Insights", date: "Oct 20" },
+    { title: "UX Researcher", company: "Data Insights", date: "Oct 20" },
+    { title: "UX Researcher", company: "Data Insights", date: "Oct 20"},
+    { title: "UX Researcher", company: "Data Insights", date: "Oct 20"},
+
   ],
   screening: [
     { title: "Frontend Developer", company: "Creative Web Agency", date: "Oct 21"},
@@ -25,7 +29,7 @@ const pipelineData = {
 
 export default function Pipeline() {
   return (
-    <div  className=" overflow-x-auto">
+    <div  className=" overflow-auto p-2 h-[400px]">
       <div className="flex gap-6 min-w-max">
         <Column title="Applied" items={pipelineData.applied} />
         <Column title="Screening" items={pipelineData.screening} />

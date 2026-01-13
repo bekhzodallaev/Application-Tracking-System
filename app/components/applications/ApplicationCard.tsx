@@ -25,7 +25,7 @@ const ApplicationCard = ({ logo, job_title, company_name, date_of_application, s
 
    const { text, bg , border} = statusStyles[status];
   return (
-      <div className='flex justify-between p-3 border rounded bg-white mt-3 items-center'>
+      <div className='flex justify-between p-3 rounded mt-3 items-center shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] '>
           <div className='flex gap-2 items-center'>
               <div className='bg-gray-200 p-2 rounded flex items-center'>
                   <p className='text-gray-500'>{logo}</p>

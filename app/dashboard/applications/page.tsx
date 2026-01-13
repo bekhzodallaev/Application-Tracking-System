@@ -3,6 +3,10 @@ import React, { useState } from 'react'
 import Card from '@/app/components/Card'
 import { FiUsers, FiCheckCircle, FiCalendar} from 'react-icons/fi'
 import ApplicationCard, { Status } from '@/app/components/applications/ApplicationCard';
+import { FiSearch } from 'react-icons/fi';
+
+<FiSearch />
+
 
 type JobApplication = {
   id: string;
@@ -46,9 +50,9 @@ const page = () => {
 
   return (
       <div className='flex flex-col gap-3'>
-      <h1>Applications</h1>
-      <p>Manage and track your job search progress</p>
-      <section className='flex flex-wrap gap-3'>
+      <h1 className='text-4xl font-bold'>Applications</h1>
+      <p className='mt-4 mb-2 text-lg'>Manage and track your job search progress</p>
+      <section className='flex flex-wrap gap-3 justify-between mt-4 mb-4'>
          <Card title='Total Applications' numOfApplications='27'>
        <FiUsers className='text-blue-600'/>
       </Card>
@@ -61,8 +65,12 @@ const page = () => {
       </Card>
       </section>
       <section className='flex justify-between '>
-        <input type="text" name="search" id="search" placeholder='Search by company or role ...' className='p-2  border rounded w-3/4' />
-        <select name="status" id="status" className='border rounded' onChange={handleChange}>
+        <div className='relative w-3/4'>
+          <FiSearch className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-500'/>
+          <input type="text" name="search" id="search" placeholder='Search by company or role ...' className='pl-10 p-2 rounded w-full
+            shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] outline-none' />
+        </div>
+        <select name="status" id="status" className='rounded shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] p-2' onChange={handleChange}>
           <option value="all"> All Statuses</option>
           <option value="interview">Interviewing</option>
           <option value="applied">Applied</option>
