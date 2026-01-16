@@ -85,7 +85,7 @@ const page = () => {
           </select>
         </div>
       </section>
-     <button className='text-white bg-blue-700 rounded w-xs p-2 mx-auto cursor-pointer'>Save all changes</button>
+     <button className='text-white bg-blue-500 rounded w-xs p-2 mx-auto cursor-pointer hover:bg-blue-700'>Save all changes</button>
     </div>
   )
 }
