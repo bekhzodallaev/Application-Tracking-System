@@ -120,7 +120,7 @@ export async function resetPasswordLink(state: FormState, formData: FormData){
     }
   );
 
-  const resetLink = `${process.env.APP_URL}/reset-password?token=${token}`;
+  const resetLink = `${process.env.APP_URL}/auth/reset-password?token=${token}`;
 
   await sendResetEmail(user.email, resetLink);
   

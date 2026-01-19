@@ -27,7 +27,7 @@ const SignIn = () => {
                   {state?.errors?.email?.map((err) => <p key={err}>{err}</p>)}
 
                   <label htmlFor="password">Password</label>
-                  <Link href="/auth/reset-password" className='text-blue-700 hover:text-blue-500'>Forgot your password?</Link>
+                  <Link href="/auth/forget-password" className='text-blue-700 hover:text-blue-500'>Forgot your password?</Link>
                </div>
               <div className='relative'>
                 <RiLockPasswordFill className='absolute left-3 w-4 h-4 top-1/2 -translate-y-1/2' color='#9CA1B0' />
