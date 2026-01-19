@@ -6,8 +6,7 @@ import { RiLockPasswordFill } from 'react-icons/ri';
 import { FcGoogle } from "react-icons/fc";
 import Link from 'next/link';
 import { FaUser } from 'react-icons/fa';
-import  {signup} from "@/app/api/auth/signup/route"
-
+import { signup } from '@/app/lib/actions/auth';
 const SignUp = () => {
 
   const [state, action, pending] = useActionState(signup, undefined);

@@ -4,7 +4,7 @@
 import React, {useActionState} from 'react'
 import Link from 'next/link'
 import { RiLockPasswordFill } from 'react-icons/ri'
-import { signup } from "@/app/api/auth/signup/route"
+import { signup } from "@/app/lib/actions/auth"
 
 
 const page = () => {

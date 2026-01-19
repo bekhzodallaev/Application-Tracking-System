@@ -5,7 +5,7 @@ import { MdEmail } from 'react-icons/md'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-import { signin } from '../../api/auth/signin/route'
+import { signin } from '@/app/lib/actions/auth'
 import { useActionState } from 'react'
 
 const SignIn = () => {
