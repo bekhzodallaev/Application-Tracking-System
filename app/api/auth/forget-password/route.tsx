@@ -7,7 +7,7 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 
 
-export async function resetPasswordLink(state: FormState, formData: FormData){
+export async function POST(state: FormState, formData: FormData){
     
     const email = formData.get('email')?.toString() || '';
 

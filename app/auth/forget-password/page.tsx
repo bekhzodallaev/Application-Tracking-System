@@ -2,9 +2,9 @@
 import { MdEmail } from 'react-icons/md'
 import React, {useActionState} from 'react'
 import Link from 'next/link'
-import { resetPasswordLink } from '@/app/api/auth/forget-password/route';
+import { POST } from '@/app/api/auth/forget-password/route';
 const page = () => {
-  const [state, action, pending] = useActionState(resetPasswordLink, undefined);
+  const [state, action, pending] = useActionState(POST, undefined);
   
   return (
        <div className=' w-full h-screen flex flex-col items-center justify-center'>
