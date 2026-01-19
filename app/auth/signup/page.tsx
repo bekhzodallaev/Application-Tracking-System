@@ -14,7 +14,7 @@ const SignUp = () => {
   return (
     <div className=' w-full h-screen flex flex-col items-center justify-center'>
       <h1 className='text-3xl mb-4'>AppTrackr</h1>
-      <form action={action} method="post" className='px-8 py-6 shadow-md rounded-lg flex flex-col gap-2 min-w-2xl bg-white'>
+      <form action={action} className='px-8 py-6 shadow-md rounded-lg flex flex-col gap-2 min-w-2xl bg-white'>
         <h2 className='text-4xl text-center'>Create your account</h2>
         <p className='text-center'>Track all your job applications in one place</p>
          
@@ -74,7 +74,7 @@ const SignUp = () => {
                <span>Sign up with Google</span>
              </button>
               </div>
-      <p className='text-center'>Already have an account ? <Link className='text-blue-700 hover:text-blue-500' href="signin">Sign in</Link></p>
+      <p className='text-center'>Already have an account ? <Link className='text-blue-700 hover:text-blue-500' href="/auth/signin">Sign in</Link></p>
       </form>
 
     </div>

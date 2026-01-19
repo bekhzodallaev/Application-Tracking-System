@@ -5,7 +5,7 @@ import { MdEmail } from 'react-icons/md'
 import { RiLockPasswordFill } from 'react-icons/ri'
 import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
-import { signin } from '../api/auth/signin/route'
+import { signin } from '../../api/auth/signin/route'
 import { useActionState } from 'react'
 
 const SignIn = () => {
@@ -13,7 +13,7 @@ const SignIn = () => {
   return (
       <div className=' w-full h-screen flex flex-col items-center justify-center'>
             <h1 className='text-3xl mb-4'>AppTrackr</h1>
-            <form action={action} method="post" className='min-w-2xl px-8 py-6 shadow-md rounded-lg flex flex-col gap-2 bg-white mb-3'>
+            <form action={action} className='min-w-2xl px-8 py-6 shadow-md rounded-lg flex flex-col gap-2 bg-white mb-3'>
               <h2 className='text-4xl text-center'>Sign in to your account</h2>
               <p className='text-center'>Track all your job applications in one place</p>
                
@@ -27,7 +27,7 @@ const SignIn = () => {
                   {state?.errors?.email?.map((err) => <p key={err}>{err}</p>)}
 
                   <label htmlFor="password">Password</label>
-                  <Link href="/reset-password" className='text-blue-700 hover:text-blue-500'>Forgot your password?</Link>
+                  <Link href="/auth/reset-password" className='text-blue-700 hover:text-blue-500'>Forgot your password?</Link>
                </div>
               <div className='relative'>
                 <RiLockPasswordFill className='absolute left-3 w-4 h-4 top-1/2 -translate-y-1/2' color='#9CA1B0' />
@@ -43,7 +43,7 @@ const SignIn = () => {
            <span>Sign up with Google</span>
          </button>
           </div>
-        <p className='text-center'>Don't you have an account ? <Link className='text-blue-700 hover:text-blue-500' href="/signup">Sign up</Link></p>
+        <p className='text-center'>Don't you have an account ? <Link className='text-blue-700 hover:text-blue-500' href="/auth/signup">Sign up</Link></p>
             </form>
         
           </div>

@@ -17,7 +17,11 @@ declare global {
 
 if (process.env.NODE_ENV === 'development') {
   if (!global._mongoClientPromise) {
-    client = new MongoClient(uri, options)
+    client = new MongoClient(uri, {
+      serverSelectionTimeoutMS: 5000,
+      
+      tls: true
+    })
     global._mongoClientPromise = client.connect()
   }
   clientPromise = global._mongoClientPromise

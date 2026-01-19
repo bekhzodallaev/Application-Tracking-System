@@ -40,8 +40,10 @@ export async function signup(state: FormState, formData: FormData) {
     await users.insertOne({
         name,
         email,
-        password: hashedPassword,
-        createdAt: new Date()
+      password: hashedPassword,
+     passwordResetTokenHash: null,
+     passwordResetExpiresAt: null,
+     createdAt: new Date()
     })
 
     redirect('/signin');
