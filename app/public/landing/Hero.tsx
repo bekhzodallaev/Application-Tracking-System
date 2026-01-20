@@ -1,6 +1,7 @@
 // app/page.tsx
 import Link from 'next/link';
 import Image from 'next/image';
+import Dashboard from "@/public/landing/dashboard.png"
 
 export default function Hero() {
   return (
@@ -63,7 +64,7 @@ export default function Hero() {
           <div className="mt-16 md:mt-24 relative max-w-5xl mx-auto">
             <div className="relative rounded-2xl overflow-hidden shadow-2xl shadow-black/60 border border-slate-700/50 bg-slate-900">
               <Image
-                src="/images/dashboard-mockup-dark.png" // ← replace with your real screenshot
+                src={Dashboard} // ← replace with your real screenshot
                 alt="Nammlion Dashboard"
                 width={1920}
                 height={1080}
@@ -85,19 +86,6 @@ export default function Hero() {
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Trust badge */}
-          <div className="mt-16 text-center">
-            <p className="text-slate-400 mb-6">Trusted by 10,000+ successful candidates</p>
-            <div className="flex justify-center gap-8 md:gap-12 opacity-80">
-              {/* You can replace with real avatars or just keep simple circles */}
-              {[...Array(3)].map((_, i) => (
-                <div key={i} className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-linear-to-br from-indigo-400 to-purple-500" />
-              ))}
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-linear-to-br from-purple-400 to-pink-500" />
-              <div className="w-12 h-12 md:w-14 md:h-14 rounded-full bg-linear-to-br from-pink-400 to-rose-500" />
             </div>
           </div>
         </div>

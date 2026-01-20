@@ -1,6 +1,15 @@
+'use client';
+
 import React from 'react'
+import { useRouter } from 'next/navigation'
 
 const Pricing = () => {
+
+  const router = useRouter();
+
+  function handleClick() {
+    router.push('/auth/signup');
+  }
   return (
     <section className="py-20 md:py-28 lg:py-32 bg-slate-950 text-white" id='pricing'>
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
@@ -51,7 +60,7 @@ const Pricing = () => {
               </li>
             </ul>
 
-            <button className="mt-auto py-4 px-8 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-medium text-white transition-colors duration-200">
+            <button onClick={handleClick} className="mt-auto py-4 px-8 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl font-medium text-white transition-colors duration-200 cursor-pointer">
               Start Free
             </button>
           </div>
@@ -98,7 +107,7 @@ const Pricing = () => {
               </li>
             </ul>
 
-            <button className="mt-auto py-4 px-8 bg-linear-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 rounded-xl font-semibold text-white shadow-lg shadow-indigo-900/40 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-900/50">
+            <button onClick={handleClick} className=" cursor-pointer mt-auto py-4 px-8 bg-linear-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 rounded-xl font-semibold text-white shadow-lg shadow-indigo-900/40 transition-all duration-300 hover:shadow-xl hover:shadow-indigo-900/50">
               Get Pro
             </button>
           </div>
@@ -140,7 +149,7 @@ const Pricing = () => {
               </li>
             </ul>
 
-            <button className="mt-auto py-4 px-8 bg-purple-900/50 hover:bg-purple-900/70 border border-purple-700 rounded-xl font-medium text-white transition-colors duration-200">
+            <button onClick={handleClick} className=" cursor-pointer mt-auto py-4 px-8 bg-purple-900/50 hover:bg-purple-900/70 border border-purple-700 rounded-xl font-medium text-white transition-colors duration-200">
               Go Premium
             </button>
           </div>

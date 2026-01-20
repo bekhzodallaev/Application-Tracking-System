@@ -1,4 +1,7 @@
 import React from 'react'
+import DashboardAnalytics from "@/public/landing/dashboard_analytics.png"
+import Image from 'next/image';
+
 
 const AboutUs = () => {
   return (
@@ -6,19 +9,20 @@ const AboutUs = () => {
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left - Image/Mockup */}
-          <div className="relative mx-auto max-w-[480px] lg:max-w-none order-2 lg:order-1">
+          <div className="relative  max-w-[640px] lg:max-w-none order-2 lg:order-1">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-teal-200/40 border border-teal-100">
-              {/* You can replace with real screenshot later */}
-              <img
-                src="/images/jobtrack-dashboard-mockup.png" // ← put your screenshot here
+              <div className="relative w-full h-[420px] md:h-[520px] lg:h-[600px]">
+              <Image
+                src={DashboardAnalytics} // ← put your screenshot here
                 alt="JobTrack Dashboard"
-                className="w-full h-auto"
-                width={1200}
-                height={800}
+                className="object-contain"
+                  priority
+                  fill
               />
+              </div>
 
               {/* Floating badge effect */}
-              <div className="absolute -bottom-5 -right-5 bg-white px-6 py-3 rounded-2xl shadow-lg border border-teal-100 text-teal-700 font-medium">
+              <div className="absolute bottom-5 right-4 bg-white px-6 py-3 rounded-2xl shadow-lg border border-teal-100 text-teal-700 font-medium">
                 Real-time tracking • 2026
               </div>
             </div>
@@ -57,12 +61,12 @@ const AboutUs = () => {
             {/* Stats */}
             <div className="mt-12 grid grid-cols-2 gap-8 max-w-md">
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-teal-600">2M+</div>
+                <div className="text-4xl md:text-5xl font-bold text-teal-600">2k+</div>
                 <p className="mt-2 text-gray-600 font-medium">JOBS TRACKED</p>
               </div>
 
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-teal-600">50K+</div>
+                <div className="text-4xl md:text-5xl font-bold text-teal-600">50+</div>
                 <p className="mt-2 text-gray-600 font-medium">OFFERS LANDED</p>
               </div>
             </div>

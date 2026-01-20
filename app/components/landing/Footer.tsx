@@ -54,9 +54,9 @@ const Footer = () => {
             <div>
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-11 h-11 rounded-full bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-2xl shadow-md">
-                  J
+                  A
                 </div>
-                <span className="text-2xl font-semibold text-white">JobTrack</span>
+                <span className="text-2xl font-semibold text-white">AppTrackr</span>
               </div>
 
               <p className="text-gray-400 text-sm leading-relaxed mb-6">
@@ -82,25 +82,12 @@ const Footer = () => {
             <div>
               <h3 className="text-lg font-semibold text-white mb-6">Product</h3>
               <ul className="space-y-4 text-gray-400 text-sm">
-                <li><Link href="/features" className="hover:text-gray-200 transition-colors">Features</Link></li>
-                <li><Link href="/pricing" className="hover:text-gray-200 transition-colors">Pricing</Link></li>
-                <li><Link href="/testimonials" className="hover:text-gray-200 transition-colors">Testimonials</Link></li>
-                <li><Link href="/integrations" className="hover:text-gray-200 transition-colors">Integrations</Link></li>
+                <li><Link href="#features" className="hover:text-gray-200 transition-colors">Features</Link></li>
+                <li><Link href="#pricing" className="hover:text-gray-200 transition-colors">Pricing</Link></li>
+                <li><Link href="#testimonials" className="hover:text-gray-200 transition-colors">Testimonials</Link></li>
+                <li><Link href="#aboutus" className="hover:text-gray-200 transition-colors">AboutUs</Link></li>
               </ul>
             </div>
-
-            {/* Company */}
-            <div>
-              <h3 className="text-lg font-semibold text-white mb-6">Company</h3>
-              <ul className="space-y-4 text-gray-400 text-sm">
-                <li><Link href="/about" className="hover:text-gray-200 transition-colors">About Us</Link></li>
-                <li><Link href="/careers" className="hover:text-gray-200 transition-colors">Careers</Link></li>
-                <li><Link href="/contact" className="hover:text-gray-200 transition-colors">Contact</Link></li>
-                <li><Link href="/blog" className="hover:text-gray-200 transition-colors">Blog</Link></li>
-              </ul>
-            </div>
-
-            {/* Legal */}
             <div>
               <h3 className="text-lg font-semibold text-white mb-6">Legal</h3>
               <ul className="space-y-4 text-gray-400 text-sm">
@@ -115,7 +102,7 @@ const Footer = () => {
           {/* Bottom bar */}
           <div className="mt-16 pt-8 border-t border-gray-800 flex flex-col sm:flex-row justify-between items-center gap-6 text-sm text-gray-500">
             <div>
-              © {new Date().getFullYear()} JobTrack Inc. All rights reserved.
+              © {new Date().getFullYear()} AppTrackr Inc. All rights reserved.
             </div>
             <div className="flex items-center gap-3">
               <span>English (US)</span>
