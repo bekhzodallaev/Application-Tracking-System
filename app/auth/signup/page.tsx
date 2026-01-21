@@ -65,15 +65,15 @@ const SignUp = () => {
       )
         }
 
-        <button className='rounded w-full border bg-blue-500 hover:bg-blue-700 text-white p-2 mt-2' disabled={pending} type='submit'>Create Account</button>
+        <button className='rounded w-full border bg-blue-500 hover:bg-blue-700 text-white p-2 mt-2 cursor-pointer' disabled={pending} type='submit'>Create Account</button>
               <p className='text-center'>Or sign up with</p>
           <div className="flex items-center">
-             <button className="w-full rounded border border-[#b6babe8a] py-2 flex items-center justify-center gap-2 hover:bg-gray-200">
+             <button className="w-full rounded border border-[#b6babe8a] py-2 flex items-center justify-center gap-2 hover:bg-gray-200 cursor-pointer">
               <FcGoogle className="w-5 h-5" />
                <span>Sign up with Google</span>
              </button>
               </div>
-      <p className='text-center'>Already have an account ? <Link className='text-blue-700 hover:text-blue-500' href="/auth/signin">Sign in</Link></p>
+      <p className='text-center'>Already have an account ? <Link className='text-blue-700 hover:text-blue-500 cursor-pointer' href="/auth/signin">Sign in</Link></p>
       </form>
 
     </div>

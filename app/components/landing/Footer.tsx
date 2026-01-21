@@ -49,7 +49,7 @@ const Footer = () => {
 
         {/* Footer Links + Branding */}
         <div className="border-t border-gray-800 pt-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
             {/* Brand Column */}
             <div>
               <div className="flex items-center gap-3 mb-6">

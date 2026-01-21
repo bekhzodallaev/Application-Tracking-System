@@ -21,7 +21,7 @@ const page = () => {
               {state?.errors?.email?.map((err) => <p key={err}>{err}</p>)}
 
               <button className='bg-blue-500 hover:bg-blue-700 text-white rounded p-2 mt-2 cursor-pointer' disabled={pending}>Send reset link</button>
-            <Link className='text-blue-700 text-center mt-2 hover:text-blue-500' href="/auth/signin"> ← Back to Login</Link>
+            <Link className='text-blue-700 text-center mt-2 hover:text-blue-500 cursor-pointer' href="/auth/signin"> ← Back to Login</Link>
             </form> 
     </div>
   )

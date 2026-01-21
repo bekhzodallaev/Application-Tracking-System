@@ -3,21 +3,28 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
 import { LuLayoutDashboard, LuChartBar } from 'react-icons/lu';
 import { FiBriefcase, FiSettings, FiLogOut } from 'react-icons/fi';
 import { FaUserCircle } from 'react-icons/fa';
 
-const Sidebar = () => {
+type User = {
+  name: string;
+  email: string;
+};
+
+type SidebarProps = {
+  user: User;
+};
+
+const Sidebar = ({ user }: SidebarProps) => {
   const pathname = usePathname();
 
- const linkClass = (href:string) =>
-  `flex p-2 gap-2 rounded-md transform hover:scale-110 transition duration-300 ${
-    pathname === href
-      ? 'bg-blue-100 text-blue-600'
-      : 'text-gray-600'
-  }`;
-
+  const linkClass = (href: string) =>
+    `flex p-2 gap-2 rounded-md transform hover:scale-110 transition duration-300 ${
+      pathname === href
+        ? 'bg-blue-100 text-blue-600'
+        : 'text-gray-600'
+    }`;
 
   return (
     <div className="relative bg-white">
@@ -25,8 +32,8 @@ const Sidebar = () => {
         <div className="flex items-center gap-3 mb-6">
           <FaUserCircle color="blue" size={50} />
           <div>
-            <h2 className="text-xl">Bekhzod Allaev</h2>
-            <p className="text-gray-500 mt-1">bekhzodallayev@gmail.com</p>
+            <h2 className="text-xl">{user.name}</h2>
+            <p className="text-gray-500 mt-1">{user.email}</p>
           </div>
         </div>
 
@@ -61,7 +68,7 @@ const Sidebar = () => {
       </div>
 
       <div className="fixed bottom-10 left-5">
-        <Link href="/signin" className="flex gap-2 text-gray-600">
+        <Link href="/auth/signin" className="flex gap-2 text-gray-600">
           <FiLogOut />
           Log Out
         </Link>

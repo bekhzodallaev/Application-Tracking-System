@@ -1,9 +1,29 @@
 import React from 'react'
 import Pipeline from '../components/pipeline/Pipeline';
-const Dashboard = () => {
+import { redirect } from 'next/navigation';
+import { ObjectId } from 'mongodb';
+import { getSession } from '@/app/lib/session';
+import { getUsersCollection } from '@/app/lib/db.server';
+
+const Dashboard = async() => {
+
+    const session = await getSession();
+  if (!session?.userId) {
+    redirect('/auth/signin');
+  }
+
+  const users = await getUsersCollection();
+  const user = await users.findOne(
+    { _id: new ObjectId(session.userId) },
+    { projection: { name: 1, email: 1 } }
+  );
+
+  if (!user) {
+    redirect('/auth/signin');
+  }
   return (
     <div className='p-4'>
-        <h1 className='text-4xl font-bold'>Welcome, Bekhzod!</h1>
+          <h1 className='text-4xl font-bold'>Welcome, { user.name}</h1>
               <p className='mt-4 mb-2 text-lg'>Here is a summary of your job application progress.</p>
               <div className='flex justify-between gap-3 mb-3 mt-4'>
         <div className='p-6 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] rounded-lg flex flex-col align-middle justify-center min-h-[200px] min-w-2xs

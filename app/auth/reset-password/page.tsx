@@ -52,7 +52,7 @@ const page = () => {
                     )
                       }
                        
-               <button className='rounded w-full border bg-blue-500 hover:bg-blue-700 text-white p-2 mt-2' disabled={pending} type='submit'>Update Password</button>
+               <button className='rounded w-full border bg-blue-500 hover:bg-blue-700 text-white p-2 mt-2 cursor-pointer' disabled={pending} type='submit'>Update Password</button>
                       </form> 
                     </div>
   )
