@@ -14,7 +14,7 @@ interface ColumnTypes {
 export default function Column({ title, items }:ColumnTypes) {
   return (
     <div className="min-w-[220px]">
-      <h3 className="text-xs font-semibold mb-2 uppercase tracking-wide text-gray-500">
+      <h3 className="sticky top-0 z-10 bg-white text-xs font-semibold mb-2 uppercase tracking-wide text-gray-500 ">
         {title} <span className="text-gray-400">({items.length})</span>
       </h3>
 
