@@ -4,7 +4,7 @@ import { SignupFormSchema, FormState, FieldErrors } from '@/app/lib/definitons';
 import bcrypt from 'bcrypt';
 import clientPromise from '@/app/lib/mongodb';
 import { redirect } from 'next/navigation';
-import { sendResetEmail } from "@/app/lib/email";
+import { sendResetEmail } from "@/app/lib/mailer";
 import crypto from 'crypto';
 import { createSession, getSession } from '../session'; // ← make sure you export getSession too
 import { getUsersCollection } from '../db.server';
