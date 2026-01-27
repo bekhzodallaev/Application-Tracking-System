@@ -1,14 +1,28 @@
 'use client';
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FcInvite } from "react-icons/fc";
 import { FaUserCircle } from 'react-icons/fa';
+import { redirect } from 'next/navigation';
+
 
 
 
 const page = () => {
-  const [checked, setChecked] = useState<boolean>(false);
+  const [isConnected, setIsconnected] = useState(false);
+  const [syncEnabled, setSyncEnabled] = useState(false);
 
+  useEffect(() => {
+  async function fetchGmailSettings() {
+    const res = await fetch('/api/settings/gmail');
+    if (res.ok) {
+      const data = await res.json();
+      setIsconnected(data.isConnected);
+      setSyncEnabled(data.syncEnabled);
+    }
+  }
+  fetchGmailSettings();
+}, []);
   return (
       <div className='flex flex-col gap-5 mb-4'>
       <h1 className='text-4xl mb-4'>Settings</h1>
@@ -60,14 +74,40 @@ const page = () => {
             <p>Connect your email to sync candidate communications</p>
           </div>
         </div>
-        {checked ? (<p className='text-green-500'>Connected</p>) : 
-          <p className='text-red-500'>Not Connected</p>
-        }
+       {isConnected
+  ? <p className="text-green-500">Connected</p>
+  : <p className="text-red-500">Not Connected</p>
+}
+
        
         <div>
-        <input type="checkbox" name='enable' id='enable' className='mr-2' checked={checked} onChange={(e) => setChecked(e.target.checked)}/>
+          <input
+  type="checkbox"
+  checked={syncEnabled}
+  disabled={!isConnected}
+  onChange={async (e) => {
+    const enabled = e.target.checked;
+
+    setSyncEnabled(enabled); // immediately update UI
+
+    await fetch('/api/settings/gmail', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ syncEnabled: enabled }),
+    });
+  }}
+/>
         <label htmlFor="enable">Enable</label>
         </div>
+        <button
+          className='bg-blue-600 cursor-pointer text-white rounded p-2'
+      onClick={() => {
+       window.location.href = '/api/gmail/auth';
+        }}
+     >
+  Connect Gmail
+</button>
+
       </section>
         <h2 className='text-2xl'>Notifications</h2>
       <section className='bg-white shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] rounded flex flex-col p-4 gap-3'> 
