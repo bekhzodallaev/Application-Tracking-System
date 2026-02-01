@@ -106,7 +106,19 @@ const page = () => {
         }}
      >
   Connect Gmail
-</button>
+        </button>
+        {isConnected && syncEnabled && (
+  <button
+    className="bg-green-600 text-white rounded p-2"
+    onClick={async () => {
+      await fetch('/api/gmail/sync', { method: 'POST' });
+      alert('Sync started');
+    }}
+  >
+    Sync Gmail Now
+  </button>
+)}
+
 
       </section>
         <h2 className='text-2xl'>Notifications</h2>
