@@ -2,9 +2,12 @@ import ApplicationCard from "./ApplicationCard";
 
 
 export interface Application {
+   id: string;
   title: string;
-  company: string;
+  company: string | null;
   date: string;
+  status: 'applied' | 'interview' | 'offer' | 'rejected' | 'withdrawn' | 'unknown';
+  confidence?: number;
 }
 
 interface ColumnTypes {

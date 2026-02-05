@@ -89,7 +89,7 @@ await db.collection('jobApplications').updateOne(
       updatedAt: new Date(),
     },
     $setOnInsert: {
-      userId: user._id,
+      userId: user._id.toString(),
       gmailMessageId: msg.id,
       createdAt: new Date(),
     },
