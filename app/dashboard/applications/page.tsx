@@ -1,102 +1,51 @@
-'use client';
-import React, { useState } from 'react'
-import Card from '@/app/components/Card'
-import { FiUsers, FiCheckCircle, FiCalendar} from 'react-icons/fi'
-import ApplicationCard, { Status } from '@/app/components/applications/ApplicationCard';
-import { FiSearch } from 'react-icons/fi';
-
-<FiSearch />
-
+import { getSession } from '@/app/lib/session';
+import { getJobApplicationStats, getUserJobApplications, getUsersCollection } from '@/app/lib/db.server';
+import { redirect } from 'next/navigation';
+import { ObjectId } from 'mongodb';
+import ApplicationsClient from './ApplicationClient';
+import { Status } from '@/app/components/applications/ApplicationCard';
 
 type JobApplication = {
   id: string;
-  logo: string;
-  job_title: string;
-  company_name: string;
-  date_of_application: string;
+  title: string;
+  company: string;
+  date: string;
   status: Status;
 };
 
-const jobApplications:JobApplication[] = [
-  { id: '1', logo:"W", job_title: "Frontend Engineer", company_name: 'Webase LTD', date_of_application: "02-10-2025", status: "applied"},
-  {id: '1', logo:"W", job_title: "Backend Engineer", company_name: 'Snowflake', date_of_application: "02-11-2025", status: "rejected"},
-  { id: '1', logo:"W", job_title: "Backend Engineer", company_name: 'Samsung', date_of_application: "07-10-2025", status: "withdrawn" },
-  { id: '1', logo:"W", job_title: "Database Engineer", company_name: 'Databricks', date_of_application: "04-23-2025", status: "offer"},
-  { id: '1', logo: "W", job_title: "UI Engineer", company_name: 'Google', date_of_application: "02-10-2025", status: "applied" },
-  { id: '1', logo:"W", job_title: "Frontend Engineer", company_name: 'Webase LTD', date_of_application: "02-10-2025", status: "applied"},
-  {id: '1', logo:"W", job_title: "Backend Engineer", company_name: 'Snowflake', date_of_application: "02-11-2025", status: "rejected"},
-  { id: '1', logo:"W", job_title: "Backend Engineer", company_name: 'Samsung', date_of_application: "07-10-2025", status: "withdrawn" },
-  { id: '1', logo:"W", job_title: "Database Engineer", company_name: 'Databricks', date_of_application: "04-23-2025", status: "offer"},
-  { id: '1', logo: "W", job_title: "UI Engineer", company_name: 'Google', date_of_application: "02-10-2025", status: "applied" },
-    { id: '1', logo:"W", job_title: "UI Engineer", company_name: 'Google', date_of_application: "02-10-2025", status: "interview"},
+export default async function Page() {
+  const session = await getSession();
 
-
-]
-
-const page = () => {
-  const [visibleCount, setVisibleCount] = useState(4);
-  const [selectedStatus, setSelectedStatus] = useState('all');
-
-
-  const loadMore = () => {
-    setVisibleCount((prev) => prev + 4);
+  if (!session?.userId) {
+    redirect('/auth/signin');
   }
 
-  const handleChange = (e: { target: { value: React.SetStateAction<string>; }; }) => {
-    setSelectedStatus(e.target.value);
+  const users = await getUsersCollection();
+  const user = await users.findOne(
+    { _id: new ObjectId(session.userId) },
+    { projection: { name: 1, email: 1 } }
+  );
+
+  if (!user) {
+    redirect('/auth/signin');
   }
 
-  const filteredApplications = selectedStatus == 'all' ? jobApplications : jobApplications.filter((application) => application.status === selectedStatus);
+  const stats = await getJobApplicationStats(session.userId);
+  const jobApplications = await getUserJobApplications(session.userId);
+  
+  const applications: JobApplication[] = jobApplications.map((app) => ({
+    id: app._id.toString(),
+    title: app.position || '',
+    company: app.company || null,
+    date: app.date ? new Date(app.date).toISOString() : '',
+    status: app.status as JobApplication['status'],
+    confidence: app.confidence,
+  }));
 
   return (
-      <div className='flex flex-col gap-3'>
-      <h1 className='text-4xl font-bold'>Applications</h1>
-      <p className='mt-4 mb-2 text-lg'>Manage and track your job search progress</p>
-      <section className='flex flex-wrap gap-3 justify-between mt-4 mb-4'>
-         <Card title='Total Applications' numOfApplications='27'>
-       <FiUsers className='text-blue-600'/>
-      </Card>
-       <Card title='Active Applications' numOfApplications='8'>
-           <FiCheckCircle className='text-green-600'/>
-      </Card>
-
-       <Card title='Interview Scheduled' numOfApplications='3'>
-           <FiCalendar className='text-purple-600'/>
-      </Card>
-      </section>
-      <section className='flex justify-between '>
-        <div className='relative w-3/4'>
-          <FiSearch className='absolute left-3 top-1/2 -translate-y-1/2 text-gray-500'/>
-          <input type="text" name="search" id="search" placeholder='Search by company or role ...' className='pl-10 p-2 rounded w-full
-            shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] outline-none' />
-        </div>
-        <select name="status" id="status" className='rounded shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] p-2' onChange={handleChange}>
-          <option value="all"> All Statuses</option>
-          <option value="interview">Interviewing</option>
-          <option value="applied">Applied</option>
-          <option value="offer">Offer</option>
-          <option value="rejected">Rejected</option>
-          <option value="withdrawn">Withdrawn</option>
-        </select>
-      </section>
-      
-      <section className='mt-3'>
-        {filteredApplications.slice(0,visibleCount).map((app, index) => (
-          <ApplicationCard
-            key={index}
-        logo={app.logo}
-       job_title={app.job_title}
-        company_name={app.company_name}
-      date_of_application={app.date_of_application}
-     status={app.status}
-          />
-        ))}
-      </section>
-      {visibleCount < filteredApplications.length && (
-         <button type='button' className='p-2 text-white bg-blue-600 rounded w-max mx-auto cursor-pointer' onClick={loadMore}>Load More Applications</button>
-      )}
-    </div>
-  )
+    <ApplicationsClient
+      stats={stats}
+      jobApplications={applications}
+    />
+  );
 }
-
-export default page

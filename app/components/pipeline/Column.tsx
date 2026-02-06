@@ -4,6 +4,7 @@ import ApplicationCard from "./ApplicationCard";
 export interface Application {
    id: string;
   title: string;
+  logo?:string,
   company: string | null;
   date: string;
   status: 'applied' | 'interview' | 'offer' | 'rejected' | 'withdrawn' | 'unknown';

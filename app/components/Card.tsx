@@ -1,7 +1,8 @@
 import React from 'react'
 
 interface CardProps{
-    position: string,
+    title?:string,
+    position?: string,
     numOfApplications: string,
     percentage?: string
     children: React.ReactNode,

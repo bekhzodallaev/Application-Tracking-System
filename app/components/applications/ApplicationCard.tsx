@@ -5,10 +5,10 @@ import { MdDateRange } from 'react-icons/md'
 export type Status = 'applied' | 'rejected' | 'withdrawn' | 'offer' | 'interview';
 
 interface CardProps {
-    logo: string,
-    job_title: string,
-    company_name: string,
-    date_of_application: string,
+    logo?: string,
+    title: string,
+    company: string,
+    date: string,
     status: Status,
 }
 
@@ -21,7 +21,7 @@ const statusStyles: Record<Status, { text: string; bg: string; border: string }>
 };
 
 
-const ApplicationCard = ({ logo, job_title, company_name, date_of_application, status }: CardProps) => {
+const ApplicationCard = ({ logo, title, company, date, status }: CardProps) => {
 
    const { text, bg , border} = statusStyles[status];
   return (
@@ -31,11 +31,11 @@ const ApplicationCard = ({ logo, job_title, company_name, date_of_application, s
                   <p className='text-gray-500'>{logo}</p>
               </div>
               <div>
-                <h2 className='text-xl'>{job_title}</h2>
-              <h3 className='text-gray-700'>{company_name}</h3>
+                <h2 className='text-xl'>{title}</h2>
+              <h3 className='text-gray-700'>{company}</h3>
           <p className='flex gap-2 items-center'>
             <MdDateRange />
-            {date_of_application}</p>
+            {date}</p>
               </div>
           </div>
 
