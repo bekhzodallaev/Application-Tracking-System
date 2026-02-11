@@ -3,26 +3,35 @@
 import React, { useState, useEffect } from 'react'
 import { FcInvite } from "react-icons/fc";
 import { FaUserCircle } from 'react-icons/fa';
-import { redirect } from 'next/navigation';
+import { CldImage } from 'next-cloudinary';
 
 
 
 
 const page = () => {
-  const [isConnected, setIsconnected] = useState(false);
+   const [isConnected, setIsConnected] = useState(false);
   const [syncEnabled, setSyncEnabled] = useState(false);
+  const [avatarPublicId, setAvatarPublicId] = useState<string | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [name, setName] = useState("");
 
-  useEffect(() => {
-  async function fetchGmailSettings() {
-    const res = await fetch('/api/settings/gmail');
-    if (res.ok) {
+   useEffect(() => {
+    async function loadSettings() {
+      const res = await fetch('/api/settings/gmail');
+      if (!res.ok) return;
+
       const data = await res.json();
-      setIsconnected(data.isConnected);
+      setIsConnected(data.isConnected);
       setSyncEnabled(data.syncEnabled);
+      setName(data.name);
+      if (data.avatar?.publicId) {
+        setAvatarPublicId(data.avatar.publicId);
+      }
     }
-  }
-  fetchGmailSettings();
-}, []);
+
+    loadSettings();
+  }, []);
+
   return (
       <div className='flex flex-col gap-5 mb-4'>
       <h1 className='text-4xl mb-4'>Settings</h1>
@@ -31,8 +40,18 @@ const page = () => {
         <div className='flex justify-between'>
           <div>
             <div className='flex gap-3'>
-              <div className='rounded-[50%] size-16 flex items-center'>
-                <FaUserCircle color="blue" size={50} />
+              <div className='relative size-16 rounded-full overflow-hidden'>
+                {avatarPublicId ? (
+   <CldImage
+        src={avatarPublicId}
+    alt="Profile avatar"
+    fill
+    className="object-cover"
+  />
+) : (
+  <FaUserCircle color="blue" size={50} />
+)}
+
               </div>
               <div>
                  <h1 className='text-2xl'>Profile Photo</h1>
@@ -41,27 +60,60 @@ const page = () => {
             </div>
             <div></div>
           </div>
-       <label className="flex items-center gap-2 p-2 rounded cursor-pointer bg-gray-100 hover:bg-gray-200 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)]">
-  Upload new photo
-  <input
-    type="file"
-    className="hidden"
-    id="myFile"
-    name="myFile"
-  />
-</label>
+        <label className="cursor-pointer bg-gray-100 px-3 py-2 rounded shadow">
+            {uploading ? 'Uploading...' : 'Upload new photo'}
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              onChange={async (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+
+                setUploading(true);
+
+                const formData = new FormData();
+                formData.append('file', file);
+
+                const res = await fetch('/api/avatar', {
+                  method: 'POST',
+                  body: formData,
+                });
+
+                const data = await res.json();
+
+                // ✅ save ONLY publicId
+                setAvatarPublicId(data.publicId);
+                setUploading(false);
+              }}
+            />
+          </label>
+
         </div>
         <div className='flex justify-between mt-5'>
           <div className='flex flex-col'>
             <label htmlFor="name">Full Name</label>
-            <input type="text" name="name" id="name" defaultValue="Bekhzod Allaev" className='rounded p-2 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)]' />
-          </div>
-          <div className='flex flex-col'> 
-            <label htmlFor="email">Email Address</label>
-            <input type="email" name="email" id="email" defaultValue="bekhzodallayev@gmail.com" className='rounded shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] p-2' />
+            <input type="text" name="name" id="name" defaultValue={name}
+                onChange={(e) => setName(e.target.value)}
+              className='rounded p-2 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)]'
+            />
           </div>
         </div>
-        <button type='button' className='rounded bg-gray-200 w-3xs p-2 hover:not-focus:bg-gray-400'>Save changes</button>
+        <button
+  type="button"
+  className="rounded bg-gray-200 w-3xs p-2 hover:not-focus:bg-gray-400"
+  onClick={async () => {
+    const res = await fetch('/api/settings/gmail', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    });
+    if (res.ok) alert('Name updated successfully');
+  }}
+>
+  Save changes
+</button>
+
       </section>
       <h2 className='text-2xl'>Integrations</h2>
       <section className='rounded shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] flex justify-between p-4 items-center bg-white'>

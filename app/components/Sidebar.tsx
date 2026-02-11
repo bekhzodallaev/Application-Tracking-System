@@ -1,11 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LuLayoutDashboard, LuChartBar } from 'react-icons/lu';
 import { FiBriefcase, FiSettings, FiLogOut } from 'react-icons/fi';
 import { FaUserCircle } from 'react-icons/fa';
+import { CldImage } from 'next-cloudinary';
+
 
 type User = {
   name: string;
@@ -18,7 +20,8 @@ type SidebarProps = {
 
 const Sidebar = ({ user }: SidebarProps) => {
   const pathname = usePathname();
-
+    const [avatarPublicId, setAvatarPublicId] = useState<string | null>(null);
+  
   const linkClass = (href: string) =>
     `flex p-2 gap-2 rounded-md transform hover:scale-110 transition duration-300 ${
       pathname === href
@@ -26,12 +29,37 @@ const Sidebar = ({ user }: SidebarProps) => {
         : 'text-gray-600'
     }`;
 
+   useEffect(() => {
+      async function loadSettings() {
+        const res = await fetch('/api/settings/gmail');
+        if (!res.ok) return;
+
+        const data = await res.json();  
+        if (data.avatar?.publicId) {
+          setAvatarPublicId(data.avatar.publicId);
+        }
+      }
+  
+      loadSettings();
+    }, []);
   return (
     <div className="relative bg-white">
       <div className="flex gap-1 w-96 flex-col p-4">
         <div className="flex items-center gap-3 mb-6">
-          <FaUserCircle color="blue" size={50} />
-          <div>
+            <div className='relative size-16 rounded-full overflow-hidden'>
+                            {avatarPublicId ? (
+               <CldImage
+                    src={avatarPublicId}
+                alt="Profile avatar"
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <FaUserCircle color="blue" size={50} />
+            )}
+            
+              </div>
+           <div>
             <h2 className="text-xl">{user.name}</h2>
             <p className="text-gray-500 mt-1">{user.email}</p>
           </div>
