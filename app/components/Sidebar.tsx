@@ -7,20 +7,14 @@ import { LuLayoutDashboard, LuChartBar } from 'react-icons/lu';
 import { FiBriefcase, FiSettings, FiLogOut } from 'react-icons/fi';
 import { FaUserCircle } from 'react-icons/fa';
 import { CldImage } from 'next-cloudinary';
+import { useUser } from '../types/context/UserContext';
 
 
-type User = {
-  name: string;
-  email: string;
-};
 
-type SidebarProps = {
-  user: User;
-};
+const Sidebar = () => {
 
-const Sidebar = ({ user }: SidebarProps) => {
+  const {user} = useUser();
   const pathname = usePathname();
-    const [avatarPublicId, setAvatarPublicId] = useState<string | null>(null);
   
   const linkClass = (href: string) =>
     `flex p-2 gap-2 rounded-md transform hover:scale-110 transition duration-300 ${
@@ -28,28 +22,15 @@ const Sidebar = ({ user }: SidebarProps) => {
         ? 'bg-blue-100 text-blue-600'
         : 'text-gray-600'
     }`;
-
-   useEffect(() => {
-      async function loadSettings() {
-        const res = await fetch('/api/settings/gmail');
-        if (!res.ok) return;
-
-        const data = await res.json();  
-        if (data.avatar?.publicId) {
-          setAvatarPublicId(data.avatar.publicId);
-        }
-      }
   
-      loadSettings();
-    }, []);
   return (
     <div className="relative bg-white">
       <div className="flex gap-1 w-96 flex-col p-4">
         <div className="flex items-center gap-3 mb-6">
             <div className='relative size-16 rounded-full overflow-hidden'>
-                            {avatarPublicId ? (
+                            {user?.avatarPublicId ? (
                <CldImage
-                    src={avatarPublicId}
+                    src={user.avatarPublicId}
                 alt="Profile avatar"
                 fill
                 className="object-cover"
@@ -60,8 +41,8 @@ const Sidebar = ({ user }: SidebarProps) => {
             
               </div>
            <div>
-            <h2 className="text-xl">{user.name}</h2>
-            <p className="text-gray-500 mt-1">{user.email}</p>
+            <h2 className="text-xl">{user?.name}</h2>
+            <p className="text-gray-500 mt-1">{user?.email}</p>
           </div>
         </div>
 
