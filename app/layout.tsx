@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import "./globals.css";
 
+import { UserProvider } from "./types/context/UserContext";
+
 const ubuntu = Ubuntu({
   subsets: ['latin'],
   weight: ['400', '700'],
@@ -24,7 +26,9 @@ export default function RootLayout({
       <body
         className={ubuntu.className}
       >
+        <UserProvider>
         {children}
+        </UserProvider>
       </body>
     </html>
   );
