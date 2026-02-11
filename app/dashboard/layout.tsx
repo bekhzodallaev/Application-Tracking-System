@@ -6,7 +6,7 @@ import { getSession } from '@/app/lib/session';
 import { getUsersCollection } from '@/app/lib/db.server';
 
 const layout = async({ children }: { children: React.ReactNode }) => {
-  const session = await getSession(); // await here – safe in Server Component
+  const session = await getSession();
 
   if (!session?.userId) {
     redirect('/auth/signin');

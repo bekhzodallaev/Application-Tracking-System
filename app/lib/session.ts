@@ -3,6 +3,8 @@
 import 'server-only';
 import { SignJWT, jwtVerify } from 'jose';
 import { cookies } from 'next/headers';
+import { getUsersCollection } from './db.server';
+import { ObjectId } from 'mongodb';
 
 const secret = new TextEncoder().encode(
   process.env.JWT_SECRET || 'super-long-random-secret-min-32-chars'
@@ -45,4 +47,18 @@ export async function getSession(): Promise<Session | null> {
 
 export async function deleteSession() {
   (await cookies()).delete('session');
+}
+
+
+export async function getUserFromSession() {
+  const session = await getSession();
+  if (!session?.userId) return null;
+
+  const users = await getUsersCollection();
+
+  const user = await users.findOne({
+    _id: new ObjectId(session.userId),
+  });
+
+  return user;
 }

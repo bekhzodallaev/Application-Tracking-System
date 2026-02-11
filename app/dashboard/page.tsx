@@ -4,6 +4,9 @@ import { redirect } from 'next/navigation';
 import { ObjectId } from 'mongodb';
 import { getSession } from '@/app/lib/session';
 import { getUsersCollection } from '@/app/lib/db.server';
+import { getJobApplicationStats } from '@/app/lib/db.server';
+import StatusCard from '../components/applications/StatusCard';
+
 
 const Dashboard = async() => {
 
@@ -21,38 +24,21 @@ const Dashboard = async() => {
   if (!user) {
     redirect('/auth/signin');
   }
+
+  const stats = await getJobApplicationStats(session.userId);
+  console.log("JOB STATS:", stats);
+
   return (
     <div className='p-4'>
           <h1 className='text-4xl font-bold'>Welcome, { user.name}</h1>
               <p className='mt-4 mb-2 text-lg'>Here is a summary of your job application progress.</p>
               <div className='flex justify-between gap-3 mb-3 mt-4'>
-        <div className='p-6 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] rounded-lg flex flex-col align-middle justify-center min-h-[200px] min-w-2xs
-                  transform hover:scale-110 transition duration-300
-                  '>
-                  <h3>Total Applications</h3>
-                  <h1 className='text-4xl'>42</h1>
-                  </div>
-        <div className='p-6 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] rounded-lg flex flex-col align-middle justify-center min-h-[200px] min-w-2xs
-                  transform hover:scale-110 transition duration-300
-                  '>
-                  <h3>Interviews Scheduled</h3>
-                  <h1  className='text-4xl'>8</h1>
-                  </div>
-        <div className='p-6 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] rounded-lg flex flex-col align-middle justify-center min-h-[200px] min-w-2xs
-                  transform hover:scale-110 transition duration-300
-                  '>
-                  <h3>Offers Received</h3>
-                  <h1  className='text-4xl'>3</h1>
-                  </div>
-        <div className='p-6 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] rounded-lg flex flex-col align-middle justify-center min-h-[200px] min-w-2xs
-                  transform hover:scale-110 transition duration-300
-                  '>
-                  <h3>Rejections</h3>
-                  <h1 className='text-4xl'>12</h1>
-              </div>
+        <StatusCard title="Total Applications" value={stats.total} />
+        <StatusCard title="Interviews Scheduled" value={stats.interviews} />
+        <StatusCard title="Offers Received" value={stats.offers} />
+        <StatusCard title="Rejections" value={stats.rejections} />
               </div>
               <h1 className='text-3xl mt-7'>Application Status Breakdown</h1>
-              {/* Board here */}
               <div className='p-3 shadow-lg rounded-lg mt-4'>
                   <div className='flex justify-between mb-4'>
                       <div>
@@ -60,7 +46,7 @@ const Dashboard = async() => {
                         <p className='text-gray-600'>All Time Applications</p>
                       </div>
                       <div>
-                          <h1>27 Active</h1>
+                          <h1>{stats.total} Active</h1>
                       </div>
                   </div>
                   <div >

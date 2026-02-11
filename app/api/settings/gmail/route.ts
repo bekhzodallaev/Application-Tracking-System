@@ -10,10 +10,15 @@ export async function GET() {
   const users = await getUsersCollection();
   const user = await users.findOne({ _id: new ObjectId(session.userId) });
 
+  if (!user) return NextResponse.json({ error: 'User not found' }, { status: 404 });
+
   return new Response(
     JSON.stringify({
       isConnected: !!user?.gmail?.refreshToken,
       syncEnabled: user?.gmail?.syncEnabled || false,
+      avatar: user.avatar || null, 
+      name:user.name || null,
+
     }),
     { status: 200 }
   );
@@ -21,16 +26,20 @@ export async function GET() {
 
 export async function POST(request: Request) {
   const body = await request.json();
-  const { syncEnabled } = body;
+  const { syncEnabled, name } = body;
+
 
   const session = await getSession();
-  if (!session?.userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
+  if (!session?.userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  if (!name) return NextResponse.json({ error: 'Name is required' }, { status: 400 });
+  
+  
   const users = await getUsersCollection();
   await users.updateOne(
     { _id: new ObjectId(session.userId) },
-    { $set: { 'gmail.syncEnabled': syncEnabled } }
+    { $set: { 'gmail.syncEnabled': syncEnabled, name }}
   );
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, name });
 }

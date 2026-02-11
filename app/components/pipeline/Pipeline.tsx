@@ -1,42 +1,50 @@
-import Column from "./Column";
+import { getSession } from "@/app/lib/session";
+import { getUserJobApplications, getUsersCollection } from "@/app/lib/db.server";
+import { ObjectId } from "mongodb";
+import { redirect } from "next/navigation";
+import Column, { Application } from "./Column";
 
-const pipelineData = {
-  applied: [
-    { title: "Product Designer", company: "Innovate Inc", date: "Oct 26"},
-    { title: "Software Engineer", company: "Tech Solutions LLC", date: "Oct 24"},
-        { title: "UX Researcher", company: "Data Insights", date: "Oct 20" },
-        { title: "UX Researcher", company: "Data Insights", date: "Oct 20"},
-    { title: "UX Researcher", company: "Data Insights", date: "Oct 20" },
-    { title: "UX Researcher", company: "Data Insights", date: "Oct 20" },
-    { title: "UX Researcher", company: "Data Insights", date: "Oct 20"},
-    { title: "UX Researcher", company: "Data Insights", date: "Oct 20"},
+export default async function Pipeline() {
+  const session = await getSession();
+  if (!session?.userId) redirect('/auth/signin');
 
-  ],
-  screening: [
-    { title: "Frontend Developer", company: "Creative Web Agency", date: "Oct 21"},
-  ],
-  hr: [
-    { title: "Data Analyst", company: "QuantumLeap", date: "Oct 20"},
-  ],
-  technical: [],
-  offer: [
-    { title: "Project Manager", company: "NextGen Corp", date: "Oct 15"},
-  ],
-  rejected: [
-    { title: "Marketing Specialist", company: "Connectivity", date: "Oct 18"},
-  ],
-};
+  const users = await getUsersCollection();
+  const user = await users.findOne(
+    { _id: new ObjectId(session.userId) },
+    { projection: { name: 1, email: 1 } }
+  );
+  if (!user) redirect('/auth/signin');
 
-export default function Pipeline() {
+  // fetch user's job applications from DB
+  const jobApplications = await getUserJobApplications(session.userId);
+
+  // map to Application type
+  const applications: Application[] = jobApplications.map((app) => ({
+    id: app._id.toString(),
+    title: app.position || '',
+    company: app.company || null,
+    date: app.date ? new Date(app.date).toISOString() : '',
+    status: app.status as Application['status'],
+    confidence: app.confidence,
+  }));
+
+  // group by status for columns
+  const pipelineData = applications.reduce((acc, app) => {
+    const status = app.status || 'unknown';
+    if (!acc[status]) acc[status] = [];
+    acc[status].push(app);
+    return acc;
+  }, {} as Record<Application['status'], Application[]>);
+
   return (
-    <div  className=" overflow-auto p-2 h-[400px]">
+    <div className="overflow-auto p-2 h-[400px]">
       <div className="flex gap-6 min-w-max">
-        <Column title="Applied" items={pipelineData.applied} />
-        <Column title="Screening" items={pipelineData.screening} />
-        <Column title="HR Interview" items={pipelineData.hr} />
-        <Column title="Technical" items={pipelineData.technical} />
-        <Column title="Offer" items={pipelineData.offer} />
-        <Column title="Rejected" items={pipelineData.rejected} />
+        <Column title="Applied" items={pipelineData.applied || []} />
+        <Column title="Interview" items={pipelineData.interview || []} />
+        <Column title="Offer" items={pipelineData.offer || []} />
+        <Column title="Rejected" items={pipelineData.rejected || []} />
+        <Column title="Withdrawn" items={pipelineData.withdrawn || []} />
+        <Column title="Unknown" items={pipelineData.unknown || []} />
       </div>
     </div>
   );
