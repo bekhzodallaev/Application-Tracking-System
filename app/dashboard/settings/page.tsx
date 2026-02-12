@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { FcInvite } from 'react-icons/fc';
 import { FaUserCircle } from 'react-icons/fa';
 import { CldImage } from 'next-cloudinary';
-import { useUser } from '@/app/types/context/UserContext';
+import { useUser } from '@/app/context/UserContext';
 
 const SettingsPage = () => {
   const { user, setUser, refreshUser } = useUser(); // get context

@@ -7,10 +7,14 @@ import { FcGoogle } from 'react-icons/fc'
 import Link from 'next/link'
 import { signin } from '@/app/lib/actions/auth'
 import { useActionState } from 'react'
+import { Loader } from '@/app/components/Loader';
+
 
 const SignIn = () => {
     const [state, action, pending] = useActionState(signin, undefined);
   return (
+    <>
+      {pending && <Loader text='Logging in ...' />}
       <div className=' w-full h-screen flex flex-col items-center justify-center'>
             <h1 className='text-3xl mb-4'>AppTrackr</h1>
             <form action={action} className='min-w-2xl px-8 py-6 shadow-md rounded-lg flex flex-col gap-2 bg-white mb-3'>
@@ -46,7 +50,9 @@ const SignIn = () => {
         <p className='text-center'>Don't you have an account ? <Link className='text-blue-700 hover:text-blue-500' href="/auth/signup">Sign up</Link></p>
             </form>
         
-          </div>
+      </div>
+    </>
+
   )
 }
 

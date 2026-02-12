@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import "./globals.css";
 
-import { UserProvider } from "./types/context/UserContext";
+import { UserProvider } from "./context/UserContext";
 
 const ubuntu = Ubuntu({
   subsets: ['latin'],

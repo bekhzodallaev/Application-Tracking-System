@@ -1,9 +1,9 @@
-import React from 'react'
 import Sidebar from '../components/Sidebar';
 import { redirect } from 'next/navigation';
 import { ObjectId } from 'mongodb';
 import { getSession } from '@/app/lib/session';
 import { getUsersCollection } from '@/app/lib/db.server';
+import AuthSync from './components/AuthSync';
 
 const layout = async({ children }: { children: React.ReactNode }) => {
   const session = await getSession();
@@ -22,15 +22,16 @@ const layout = async({ children }: { children: React.ReactNode }) => {
     redirect('/auth/signin');
   }
 
+
   const year = new Date().getFullYear();
   return (
     <div className='flex min-h-screen'>
       <aside className=' h-screen sticky top-0 bg-white' >
         <Sidebar/>
       </aside>
-          <main  className='flex-1 p-6 overflow-x-hidden'>
+      <main className='flex-1 p-6 overflow-x-hidden'>
+        <AuthSync />
             {children}
-
              <p className='text-center mt-10'>@ {year} AppTrackr.com </p>
           </main>
     </div>

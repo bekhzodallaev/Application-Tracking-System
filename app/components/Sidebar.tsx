@@ -7,13 +7,15 @@ import { LuLayoutDashboard, LuChartBar } from 'react-icons/lu';
 import { FiBriefcase, FiSettings, FiLogOut } from 'react-icons/fi';
 import { FaUserCircle } from 'react-icons/fa';
 import { CldImage } from 'next-cloudinary';
-import { useUser } from '../types/context/UserContext';
-
+import { useUser } from '../context/UserContext';
+import { useRouter } from 'next/navigation';
+import { LogOutIcon } from 'lucide-react';
 
 
 const Sidebar = () => {
 
-  const {user} = useUser();
+  const { user, setUser } = useUser();
+  const router = useRouter();
   const pathname = usePathname();
   
   const linkClass = (href: string) =>
@@ -77,12 +79,16 @@ const Sidebar = () => {
       </div>
 
       <div className="fixed bottom-10 left-5">
-        <Link href="/auth/signin" className="flex gap-2 text-gray-600">
-          <FiLogOut />
-          Log Out
-        </Link>
+        <button className='flex gap-2 cursor-pointer' onClick={async () => {
+          await fetch('/api/logout', { method: 'POST' });
+          setUser(null);
+          router.push('/auth/signin');
+          
+        }}>
+          <LogOutIcon />
+          Log Out</button>
       </div>
-    </div>
+      </div>
   );
 };
 
