@@ -5,8 +5,6 @@ import { FcInvite } from 'react-icons/fc';
 import { FaUserCircle } from 'react-icons/fa';
 import { CldImage } from 'next-cloudinary';
 import { useUser } from '@/app/types/context/UserContext';
-import { NextResponse } from 'next/server';
-import { code } from 'framer-motion/client';
 
 const SettingsPage = () => {
   const { user, setUser, refreshUser } = useUser(); // get context
