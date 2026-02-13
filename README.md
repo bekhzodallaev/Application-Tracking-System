@@ -86,14 +86,12 @@ Add your API key to `.env.local`. The app uses structured outputs for reliable J
 
 ## 📊 Screenshots
 
-(Add screenshots here – e.g. dashboard, timeline, settings page)
+![Dashboard Overview](https://github.com/user-attachments/assets/21e3cd26-29d7-4f29-8d09-e481aa60765d)
 
-![Dashboard Overview](<img width="1828" height="842" alt="image" src="https://github.com/user-attachments/assets/21e3cd26-29d7-4f29-8d09-e481aa60765d" />
-)
-![Application Timeline](<img width="1503" height="838" alt="image" src="https://github.com/user-attachments/assets/21380316-d6fd-4f33-a862-da10732caba8" />
-)
-![Analytics](<img width="1503" height="838" alt="image" src="https://github.com/user-attachments/assets/e40a06e3-d02f-4814-a31f-cc122ca3af2d" />
-)
+![Application Timeline](https://github.com/user-attachments/assets/21380316-d6fd-4f33-a862-da10732caba8)
+
+![Analytics](https://github.com/user-attachments/assets/e40a06e3-d02f-4814-a31f-cc122ca3af2d)
+
 
 ## 🔒 Security & Privacy Notes
 
