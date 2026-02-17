@@ -29,7 +29,7 @@ const layout = async ({ children }: { children: React.ReactNode }) => {
       </aside>
 <main className="flex-1 overflow-y-auto overflow-x-hidden">
 
-  <div className="md:hidden sticky top-0 z-40 bg-gray-50 border-b  px-4 py-3">
+  <div className="md:hidden sticky top-0 z-40 bg-gray-50 border-b border-gray-200  px-4 py-3">
     <MobileSidebar />
   </div>
 

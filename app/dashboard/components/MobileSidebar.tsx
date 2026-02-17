@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Sidebar from '../../components/Sidebar';
-import { Menu } from 'lucide-react';
+import { TfiMenuAlt } from "react-icons/tfi";
 
 const MobileSidebar = () => {
   const [open, setOpen] = useState(false);
@@ -10,12 +10,12 @@ const MobileSidebar = () => {
   return (
     <>
       <button
-        className="p-2 border rounded-md bg-white"
+        className="p-2 bg-white"
               onClick={() => setOpen(true)}
             
       >
-        <Menu />
-      </button>
+              <TfiMenuAlt  size={25}/>
+          </button>
 
       {open && (
         <div className="fixed inset-0 bg-black/40 z-50 md:hidden">
