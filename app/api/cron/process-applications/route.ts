@@ -9,12 +9,22 @@ export async function GET() {
   // Optional: Secure it (Vercel cron calls without auth, but good practice)
   // if (request.headers.get('x-vercel-cron') !== 'true') { // or use a secret env var
   //   return new Response('Not authorized', { status: 403 });
-  // }
+    // }
+    
+
 
   try {
+
+// ... rest of loop with per-item logs
     const client = await clientPromise;
     const db = client.db('ats'); 
-    const collection = db.collection('jobApplications');
+      const collection = db.collection('jobApplications');
+      
+      console.log('Cron started at', new Date().toISOString());
+console.log('MongoDB URI exists?', !!process.env.MONGODB_URI);
+console.log('Mongo connected successfully');
+const pending = await collection.find({ status: 'pending' }).limit(10).toArray();
+console.log('Found pending count:', pending.length);
 
     // Fetch a small batch of pending docs (adjust limit to fit execution time)
     const pendingDocs = await collection
