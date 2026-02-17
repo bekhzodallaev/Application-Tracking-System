@@ -1,5 +1,4 @@
 
-import React, { useState } from 'react'
 import { MdDateRange } from 'react-icons/md'
 
 export type Status = 'applied' | 'rejected' | 'withdrawn' | 'offer' | 'interview' | 'unknown';

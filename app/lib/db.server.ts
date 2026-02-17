@@ -2,18 +2,15 @@
 import { MongoClient, Db, Collection } from 'mongodb';
 import clientPromise from './mongodb'; // your original promise that resolves to MongoClient
 import 'server-only';
-import { ObjectId } from 'mongodb';
 
 // ── Type declaration for global (fixes TS18048 / implicit any) ──
 declare global {
-  // eslint-disable-next-line no-var
   var _mongoClientPromise: Promise<MongoClient> | undefined;
 }
 
 // Cache the DB and collection (singleton pattern)
 let cachedDb: Db | undefined;
 let cachedUsers: Collection | undefined;
-let cachedJobApplications: Collection | undefined;
 
 // Initialize the global promise if not set (HMR-safe in dev)
 if (!global._mongoClientPromise) {

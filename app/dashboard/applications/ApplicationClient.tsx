@@ -18,6 +18,7 @@ export default function ApplicationsClient({
   stats,
   jobApplications,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   stats: any;
   jobApplications: JobApplication[];
 }) {

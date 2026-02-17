@@ -28,9 +28,13 @@ export default function AnalyticsClient({
   jobRole,
   avgTimeData,
 }: {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   stats: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   funnelData: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   jobRole: any[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   avgTimeData: any[];
 }) {
   return (

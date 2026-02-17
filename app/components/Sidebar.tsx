@@ -40,7 +40,7 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
 }
     }
     fetchUserAvatar();
-  }, []);
+  },[user, setUser]);
 
   return (
     <div className="h-full flex flex-col bg-white">
