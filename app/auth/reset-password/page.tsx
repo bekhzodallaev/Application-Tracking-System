@@ -3,10 +3,10 @@
 import React, { useActionState } from 'react';
 import Link from 'next/link';
 import { RiLockPasswordFill } from 'react-icons/ri';
-import { signup } from '@/app/lib/actions/auth'; // Note: probably should be resetPassword action?
+import { signup } from '@/app/lib/actions/auth';
 
 const ResetPassword = () => {
-  const [state, action, pending] = useActionState(signup, undefined); // ← Change to your actual reset action
+  const [state, action, pending] = useActionState(signup, undefined);
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
@@ -89,7 +89,6 @@ const ResetPassword = () => {
             )}
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={pending}
@@ -98,7 +97,6 @@ const ResetPassword = () => {
             {pending ? 'Updating password...' : 'Update Password'}
           </button>
 
-          {/* Optional: Back to Login link */}
           <div className="text-center pt-2">
             <Link
               href="/auth/signin"

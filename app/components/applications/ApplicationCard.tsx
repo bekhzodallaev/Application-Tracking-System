@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { MdDateRange } from 'react-icons/md'
 
-export type Status = 'applied' | 'rejected' | 'withdrawn' | 'offer' | 'interview';
+export type Status = 'applied' | 'rejected' | 'withdrawn' | 'offer' | 'interview' | 'unknown';
 
 interface CardProps {
     logo?: string,
@@ -17,11 +17,14 @@ const statusStyles: Record<Status, { text: string; bg: string; border: string }>
   rejected: { text: 'text-red-700', bg: 'bg-red-100', border: 'border-red-700' },
   withdrawn: { text: 'text-yellow-700', bg: 'bg-yellow-100', border: 'border-yellow-700' },
   offer: { text: 'text-green-700', bg: 'bg-green-100', border: 'border-green-700' },
-  interview :  { text: 'text-orange-700', bg: 'bg-orange-100', border: 'border-orange-700' },
+  interview: { text: 'text-orange-700', bg: 'bg-orange-100', border: 'border-orange-700' },
+   unknown: { text: 'text-gray-700', bg: 'bg-gray-100', border: 'border-gray-700' },
+
+  
 };
 
 
-const ApplicationCard = ({ logo, title, company, date, status }: CardProps) => {
+const ApplicationCard = ({ logo, title, company, date, status, }: CardProps) => {
 
    const { text, bg , border} = statusStyles[status];
   return (
