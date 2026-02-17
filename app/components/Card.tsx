@@ -12,7 +12,7 @@ interface CardProps{
 
 const Card = ({position, children, numOfApplications, percentage, bgColor, date}:CardProps) => {
   return (
-      <div className='flex justify-between min-w-sm rounded flex-col p-3 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] transform hover:scale-110 transition duration-300'>
+      <div className='flex justify-between  rounded flex-col p-3 shadow-[0px_1px_2px_0px_rgba(60,64,67,0.3),0px_1px_3px_1px_rgba(60,64,67,0.15)] transform hover:scale-110 transition duration-300'>
           <div className='flex justify-between'>
               <h1>{position}</h1>
               <div className={`p-2 rounded ${bgColor}`}>{children}</div>

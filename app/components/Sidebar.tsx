@@ -1,38 +1,40 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LuLayoutDashboard, LuChartBar } from 'react-icons/lu';
-import { FiBriefcase, FiSettings, FiLogOut } from 'react-icons/fi';
+import { FiBriefcase, FiSettings } from 'react-icons/fi';
 import { FaUserCircle } from 'react-icons/fa';
 import { CldImage } from 'next-cloudinary';
 import { useUser } from '../context/UserContext';
-import { useRouter } from 'next/navigation';
 import { LogOutIcon } from 'lucide-react';
 
-
-const Sidebar = () => {
-
+const Sidebar = ({ onClose }: { onClose?: () => void }) => {
   const { user, setUser } = useUser();
   const router = useRouter();
   const pathname = usePathname();
-  
+
   const linkClass = (href: string) =>
-    `flex p-2 gap-2 rounded-md transform hover:scale-110 transition duration-300 ${
-      pathname === href
-        ? 'bg-blue-100 text-blue-600'
-        : 'text-gray-600'
+    `flex items-center p-2 gap-2 rounded-md transition hover:bg-gray-100 ${
+      pathname === href ? 'bg-blue-100 text-blue-600' : 'text-gray-600'
     }`;
-  
+
+  const logout = async () => {
+    await fetch('/api/logout', { method: 'POST' });
+    setUser(null);
+    router.push('/auth/signin');
+  };
+
   return (
-    <div className="relative bg-white">
-      <div className="flex gap-1 w-96 flex-col p-4">
+    <div className="h-full flex flex-col bg-white">
+      <div className="flex flex-col p-4 gap-1 w-64 md:w-72">
+        {/* User */}
         <div className="flex items-center gap-3 mb-6">
-            <div className='relative size-16 rounded-full overflow-hidden'>
-                            {user?.avatarPublicId ? (
-               <CldImage
-                    src={user.avatarPublicId}
+          <div className="relative size-14 rounded-full overflow-hidden">
+            {user?.avatarPublicId ? (
+              <CldImage
+                src={user.avatarPublicId}
                 alt="Profile avatar"
                 fill
                 className="object-cover"
@@ -40,15 +42,16 @@ const Sidebar = () => {
             ) : (
               <FaUserCircle color="blue" size={50} />
             )}
-            
-              </div>
-           <div>
-            <h2 className="text-xl">{user?.name}</h2>
-            <p className="text-gray-500 mt-1">{user?.email}</p>
+          </div>
+
+          <div className="min-w-0">
+            <h2 className="text-lg font-semibold truncate">{user?.name}</h2>
+            <p className="text-sm text-gray-500 truncate">{user?.email}</p>
           </div>
         </div>
 
-        <Link href="/dashboard" className={linkClass('/dashboard')}>
+        {/* Links */}
+        <Link href="/dashboard" className={linkClass('/dashboard')} onClick={onClose}>
           <LuLayoutDashboard />
           Dashboard
         </Link>
@@ -56,6 +59,7 @@ const Sidebar = () => {
         <Link
           href="/dashboard/applications"
           className={linkClass('/dashboard/applications')}
+          onClick={onClose}
         >
           <FiBriefcase />
           Applications
@@ -64,6 +68,7 @@ const Sidebar = () => {
         <Link
           href="/dashboard/analytics"
           className={linkClass('/dashboard/analytics')}
+          onClick={onClose}
         >
           <LuChartBar />
           Analytics
@@ -72,23 +77,23 @@ const Sidebar = () => {
         <Link
           href="/dashboard/settings"
           className={linkClass('/dashboard/settings')}
+          onClick={onClose}
         >
           <FiSettings />
           Settings
         </Link>
       </div>
 
-      <div className="fixed bottom-10 left-5">
-        <button className='flex gap-2 cursor-pointer' onClick={async () => {
-          await fetch('/api/logout', { method: 'POST' });
-          setUser(null);
-          router.push('/auth/signin');
-          
-        }}>
-          <LogOutIcon />
-          Log Out</button>
+      <div className="mt-auto p-4 border-t border-gray-200">
+        <button
+          onClick={logout}
+          className="flex items-center gap-2 text-gray-600 hover:text-red-500"
+        >
+          <LogOutIcon size={18} />
+          Log Out
+        </button>
       </div>
-      </div>
+    </div>
   );
 };
 
