@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, {useEffect} from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { LuLayoutDashboard, LuChartBar } from 'react-icons/lu';
@@ -9,6 +9,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import { CldImage } from 'next-cloudinary';
 import { useUser } from '../context/UserContext';
 import { LogOutIcon } from 'lucide-react';
+
 
 const Sidebar = ({ onClose }: { onClose?: () => void }) => {
   const { user, setUser } = useUser();
@@ -25,6 +26,21 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
     setUser(null);
     router.push('/auth/signin');
   };
+
+    useEffect(() => {
+    async function fetchUserAvatar() {
+      const res = await fetch('/api/settings/gmail');
+      if (!res.ok) return;
+      const data = await res.json();
+     if (user && data.avatar?.publicId) {
+  setUser({
+    ...user,
+    avatarPublicId: data.avatar.publicId,
+  });
+}
+    }
+    fetchUserAvatar();
+  }, []);
 
   return (
     <div className="h-full flex flex-col bg-white">
