@@ -27,21 +27,6 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
     router.push('/auth/signin');
   };
 
-    useEffect(() => {
-    async function fetchUserAvatar() {
-      const res = await fetch('/api/settings/gmail');
-      if (!res.ok) return;
-      const data = await res.json();
-     if (user && data.avatar?.publicId) {
-  setUser({
-    ...user,
-    avatarPublicId: data.avatar.publicId,
-  });
-}
-    }
-    fetchUserAvatar();
-  },[user, setUser]);
-
   return (
     <div className="h-full flex flex-col bg-white">
       <div className="flex flex-col p-4 gap-1 w-64 md:w-72">

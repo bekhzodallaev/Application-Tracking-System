@@ -7,7 +7,7 @@ import { CldImage } from 'next-cloudinary';
 import { useUser } from '@/app/context/UserContext';
 
 const SettingsPage = () => {
-  const { user, setUser } = useUser();
+  const { user, refreshUser } = useUser();
 
   const [isConnected, setIsConnected] = useState(false);
   const [syncEnabled, setSyncEnabled] = useState(false);
@@ -15,43 +15,33 @@ const SettingsPage = () => {
   const [nameInput, setNameInput] = useState(user?.name || '');
 
   useEffect(() => {
+      console.log("🚀 LOAD SETTINGS CALLED");
     async function loadSettings() {
       const res = await fetch('/api/settings/gmail');
       if (!res.ok) return;
 
       const data = await res.json();
+          console.log("📡 FETCH DONE");
+
 
       setIsConnected(data.isConnected);
       setSyncEnabled(data.syncEnabled);
-
-      if (!user) return;
-
-      if (data.name && data.name !== user.name) {
-        setUser({ ...user, name: data.name });
-      }
-
-      if (data.avatar?.publicId && data.avatar.publicId !== user.avatarPublicId) {
-        setUser({ ...user, avatarPublicId: data.avatar.publicId });
-      }
-
       setNameInput(data.name || '');
     }
-
     loadSettings();
-    // eslint-disable-next-line
   }, []);
 
-  const saveName = async () => {
-    await fetch('/api/settings/gmail', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name: nameInput }),
-    });
+ const saveName = async () => {
+  await fetch('/api/settings/gmail', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: nameInput }),
+  });
 
-    if (!user) return;
-    setUser({ ...user, name: nameInput });
-    alert('Name updated successfully');
-  };
+  await refreshUser(); // 🔥 THIS IS THE KEY
+
+  alert('Name updated successfully');
+};
 
   const uploadAvatar = async (file: File) => {
     setUploading(true);
@@ -64,11 +54,9 @@ const SettingsPage = () => {
       body: formData,
     });
 
-    const data = await res.json();
-    if (!user) return;
-
-    setUser({ ...user, avatarPublicId: data.publicId });
+     await refreshUser();
     setUploading(false);
+    alert("Avar has been set successfully!")
   };
 
   return (
@@ -171,15 +159,19 @@ const SettingsPage = () => {
               type="checkbox"
               checked={syncEnabled}
               disabled={!isConnected}
-              onChange={async (e) => {
-                const enabled = e.target.checked;
-                setSyncEnabled(enabled);
-                await fetch('/api/settings/gmail', {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({ syncEnabled: enabled }),
-                });
-              }}
+             onChange={async (e) => {
+          const enabled = e.target.checked;
+          setSyncEnabled(enabled); // optimistic UI
+         const res = await fetch('/api/settings/gmail', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ syncEnabled: enabled }),
+        });
+
+       if (!res.ok) {
+        setSyncEnabled(!enabled); // rollback on failure
+      }
+}}
             />
             Enable sync
           </label>

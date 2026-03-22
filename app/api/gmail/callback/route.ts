@@ -40,7 +40,7 @@ export async function GET(request: Request) {
     );
 
     const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001';
 
     return NextResponse.redirect(
       `${baseUrl}/dashboard/settings?gmail=connected`
@@ -49,7 +49,7 @@ export async function GET(request: Request) {
     console.error('OAuth callback error:', error);
 
     const baseUrl =
-      process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+      process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3001';
 
     return NextResponse.redirect(
       `${baseUrl}/dashboard/settings?gmail=error`

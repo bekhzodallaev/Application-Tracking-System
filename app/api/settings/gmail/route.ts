@@ -28,18 +28,31 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { syncEnabled, name } = body;
 
-
   const session = await getSession();
+  if (!session?.userId) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
 
-  if (!session?.userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  if (!name) return NextResponse.json({ error: 'Name is required' }, { status: 400 });
-  
-  
   const users = await getUsersCollection();
+
+  const updateFields: any = {};
+
+  if (typeof syncEnabled === 'boolean') {
+    updateFields['gmail.syncEnabled'] = syncEnabled;
+  }
+
+  if (typeof name === 'string') {
+    updateFields['name'] = name;
+  }
+
+  if (Object.keys(updateFields).length === 0) {
+    return NextResponse.json({ error: 'Nothing to update' }, { status: 400 });
+  }
+
   await users.updateOne(
     { _id: new ObjectId(session.userId) },
-    { $set: { 'gmail.syncEnabled': syncEnabled, name }}
+    { $set: updateFields }
   );
 
-  return NextResponse.json({ success: true, name });
+  return NextResponse.json({ success: true });
 }

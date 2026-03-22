@@ -31,7 +31,17 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       }
 
       const data = await res.json();
-      setUser(data);
+      setUser((prev) => {
+        if (!prev) return data;
+
+        const isSame =
+          prev.name === data.name &&
+          prev.email === data.email &&
+          prev.avatarPublicId === data.avatarPublicId;
+
+        return isSame ? prev : data;
+      });
+
     } catch {
       setUser(null);
     }

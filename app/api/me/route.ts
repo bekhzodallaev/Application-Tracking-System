@@ -12,6 +12,6 @@ export async function GET() {
   return NextResponse.json({
     name: user.name,
     email: user.email,
-    avatarPublicId: user.avatarPublicId ?? null,
+    avatarPublicId: user.avatar?.publicId ?? null,
   });
 }
