@@ -8,6 +8,7 @@ import { useUser } from '@/app/context/UserContext';
 
 const SettingsPage = () => {
   const { user, refreshUser } = useUser();
+  const [syncing, setSyncing] = useState(false);
 
   const [isConnected, setIsConnected] = useState(false);
   const [syncEnabled, setSyncEnabled] = useState(false);
@@ -56,7 +57,7 @@ const SettingsPage = () => {
 
      await refreshUser();
     setUploading(false);
-    alert("Avar has been set successfully!")
+    alert("Avatar has been set successfully!")
   };
 
   return (
@@ -187,14 +188,22 @@ const SettingsPage = () => {
 
           {isConnected && syncEnabled && (
             <button
-              className="bg-green-600 text-white rounded p-2 w-full sm:w-auto"
-              onClick={async () => {
-                await fetch('/api/gmail/sync', { method: 'POST' });
+              className={`${syncing ? 'bg-gray-400' : 'bg-green-600'} text-white rounded p-2 w-full sm:w-auto`}
+             onClick={async () => {
+              setSyncing(true);
+
+            try {
+               await fetch('/api/gmail/sync', { method: 'POST' });
                 alert('Sync started');
-              }}
+             } catch (err) {
+            console.error(err);
+            } finally {
+            setSyncing(false);
+          }
+          }}
             >
-              Sync Gmail Now
-            </button>
+          {syncing ? 'Syncing...' : 'Sync Gmail Now'}   
+      </button>
           )}
         </div>
       </section>
