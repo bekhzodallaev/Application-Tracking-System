@@ -24,11 +24,22 @@ export default function ApplicationsClient({
 }) {
   const [visibleCount, setVisibleCount] = useState(4);
   const [selectedStatus, setSelectedStatus] = useState('all');
+  const [search, setSearch] =useState("");
 
-  const filteredApplications =
-    selectedStatus === 'all'
-      ? jobApplications
-      : jobApplications.filter(app => app.status === selectedStatus);
+
+
+
+
+const filteredApplications = jobApplications.filter((app) => {
+  const matchesStatus =
+    selectedStatus === 'all' || app.status === selectedStatus;
+
+  const matchesSearch =
+    app.title.toLowerCase().includes(search.toLowerCase()) ||
+    app.company.toLowerCase().includes(search.toLowerCase());
+
+  return matchesStatus && matchesSearch;
+});
 
   return (
     <div className="flex flex-col gap-4">
@@ -66,13 +77,14 @@ export default function ApplicationsClient({
           <input
             placeholder="Search by company or role..."
             className="pl-10 p-2 rounded w-full shadow outline-none bg-white"
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
           />
         </div>
 
         {/* Select */}
         <select
           className="rounded shadow p-2 w-full md:w-56 bg-white"
-          onChange={(e) => setSelectedStatus(e.target.value)}
+          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setSelectedStatus(e.target.value)}
         >
           <option value="all">All Statuses</option>
           <option value="interview">Interviewing</option>
