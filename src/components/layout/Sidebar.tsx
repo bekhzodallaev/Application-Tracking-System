@@ -1,15 +1,13 @@
-'use client';
+"use client";
 
-import React, {useEffect} from 'react';
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
-import { LuLayoutDashboard, LuChartBar } from 'react-icons/lu';
-import { FiBriefcase, FiSettings } from 'react-icons/fi';
-import { FaUserCircle } from 'react-icons/fa';
-import { CldImage } from 'next-cloudinary';
-import { useUser } from '../context/UserContext';
-import { LogOutIcon } from 'lucide-react';
-
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { LuLayoutDashboard, LuChartBar } from "react-icons/lu";
+import { FiBriefcase, FiSettings } from "react-icons/fi";
+import { FaUserCircle } from "react-icons/fa";
+import { CldImage } from "next-cloudinary";
+import { useUser } from "@/context/UserContext";
+import { LogOutIcon } from "lucide-react";
 
 const Sidebar = ({ onClose }: { onClose?: () => void }) => {
   const { user, setUser } = useUser();
@@ -18,13 +16,13 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
 
   const linkClass = (href: string) =>
     `flex items-center p-2 gap-2 rounded-md transition hover:bg-gray-100 ${
-      pathname === href ? 'bg-blue-100 text-blue-600' : 'text-gray-600'
+      pathname === href ? "bg-blue-100 text-blue-600" : "text-gray-600"
     }`;
 
   const logout = async () => {
-    await fetch('/api/logout', { method: 'POST' });
+    await fetch("/api/logout", { method: "POST" });
     setUser(null);
-    router.push('/auth/signin');
+    router.push("/auth/signin");
   };
 
   return (
@@ -52,14 +50,18 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
         </div>
 
         {/* Links */}
-        <Link href="/dashboard" className={linkClass('/dashboard')} onClick={onClose}>
+        <Link
+          href="/dashboard"
+          className={linkClass("/dashboard")}
+          onClick={onClose}
+        >
           <LuLayoutDashboard />
           Dashboard
         </Link>
 
         <Link
           href="/dashboard/applications"
-          className={linkClass('/dashboard/applications')}
+          className={linkClass("/dashboard/applications")}
           onClick={onClose}
         >
           <FiBriefcase />
@@ -68,7 +70,7 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
 
         <Link
           href="/dashboard/analytics"
-          className={linkClass('/dashboard/analytics')}
+          className={linkClass("/dashboard/analytics")}
           onClick={onClose}
         >
           <LuChartBar />
@@ -77,7 +79,7 @@ const Sidebar = ({ onClose }: { onClose?: () => void }) => {
 
         <Link
           href="/dashboard/settings"
-          className={linkClass('/dashboard/settings')}
+          className={linkClass("/dashboard/settings")}
           onClick={onClose}
         >
           <FiSettings />

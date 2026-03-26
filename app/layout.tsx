@@ -2,14 +2,13 @@ import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import "./globals.css";
 
-import { UserProvider } from "./context/UserContext";
+import { UserProvider } from "@/context/UserContext";
 
 const ubuntu = Ubuntu({
-  subsets: ['latin'],
-  weight: ['400', '700'],
-  display:'swap'
-})
-
+  subsets: ["latin"],
+  weight: ["400", "700"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "AppTrackr",
@@ -23,12 +22,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={ubuntu.className}
-      >
-        <UserProvider>
-        {children}
-        </UserProvider>
+      <body className={ubuntu.className}>
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   );
