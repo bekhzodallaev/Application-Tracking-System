@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { oauth2Client } from "@/lib/gmail";
+import { oauth2Client } from "@/lib/services/gmail";
 
 export async function GET() {
   const authorizeUrl = oauth2Client.generateAuthUrl({

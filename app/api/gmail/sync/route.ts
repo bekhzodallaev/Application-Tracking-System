@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
-import { gmail, oauth2Client } from "@/lib/gmail";
-import { extractPlainText } from "@/lib/gmail-utils";
-import { extractJobEvent } from "@/lib/extract-job";
-import { getUserFromSession } from "@/lib/session";
-import clientPromise from "@/lib/mongodb";
+import { gmail, oauth2Client } from "@/lib/services/gmail";
+import { extractPlainText } from "@/lib/services/gmail/utils";
+import { extractJobEvent } from "@/lib/services/extract-job";
+import { getUserFromSession } from "@/lib/auth/session";
+import clientPromise from "@/lib/db/mongodb";
 
 export async function POST() {
   const user = await getUserFromSession();

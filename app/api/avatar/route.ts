@@ -1,7 +1,7 @@
-import cloudinary from "@/lib/cloudinary";
+import cloudinary from "@/lib/services/cloudinary";
 import { NextResponse } from "next/server";
-import { getSession } from "@/lib/session";
-import { getUsersCollection } from "@/lib/db.server";
+import { getSession } from "@/lib/auth/session";
+import { getUsersCollection } from "@/lib/db/server";
 import { ObjectId } from "mongodb";
 
 export async function POST(req: Request) {

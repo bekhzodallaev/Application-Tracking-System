@@ -1,5 +1,5 @@
-import { getUsersCollection } from "@/lib/db.server";
-import { getSession } from "@/lib/session";
+import { getUsersCollection } from "@/lib/db/server";
+import { getSession } from "@/lib/auth/session";
 import { ObjectId } from "mongodb";
 import { NextResponse } from "next/server";
 

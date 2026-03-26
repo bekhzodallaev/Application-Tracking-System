@@ -1,6 +1,6 @@
 // app/api/me/route.ts
 import { NextResponse } from "next/server";
-import { getUserFromSession } from "@/lib/session";
+import { getUserFromSession } from "@/lib/auth/session";
 
 export async function GET() {
   const user = await getUserFromSession();

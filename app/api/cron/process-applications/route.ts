@@ -1,6 +1,6 @@
 // import { NextResponse } from 'next/server';
-// import clientPromise from '@/lib/mongodb';
-// import { extractJobEvent } from '@/lib/extract-job';
+// import clientPromise from '@/lib/db/mongodb';
+// import { extractJobEvent } from '@/lib/services/extract-job';
 
 // export const dynamic = 'force-dynamic';
 

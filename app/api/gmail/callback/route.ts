@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { oauth2Client } from "@/lib/gmail";
-import { getUsersCollection } from "@/lib/db.server";
-import { getSession } from "@/lib/session";
+import { oauth2Client } from "@/lib/services/gmail";
+import { getUsersCollection } from "@/lib/db/server";
+import { getSession } from "@/lib/auth/session";
 import { ObjectId } from "mongodb";
 
 export async function GET(request: Request) {

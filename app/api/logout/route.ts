@@ -1,6 +1,6 @@
 // app/api/logout/route.ts
 import { NextResponse } from "next/server";
-import { deleteSession } from "@/lib/session";
+import { deleteSession } from "@/lib/auth/session";
 
 export async function POST() {
   await deleteSession();
