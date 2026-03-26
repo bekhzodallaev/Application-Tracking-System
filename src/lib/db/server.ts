@@ -1,7 +1,7 @@
-// app/lib/db.server.ts
-import { MongoClient, Db, Collection } from 'mongodb';
-import clientPromise from './mongodb'; // your original promise that resolves to MongoClient
-import 'server-only';
+import { MongoClient, Db, Collection } from "mongodb";
+import { DashboardStats } from "@/features/dashboard/types";
+import clientPromise from "./mongodb"; // your original promise that resolves to MongoClient
+import "server-only";
 
 // ── Type declaration for global (fixes TS18048 / implicit any) ──
 declare global {
@@ -33,36 +33,36 @@ export async function getUsersCollection(): Promise<Collection> {
   if (cachedUsers) return cachedUsers;
 
   const db = await getDb();
-  cachedUsers = db.collection('users');
+  cachedUsers = db.collection("users");
 
   return cachedUsers;
 }
 
-
 export async function getUserJobApplications(userId: string) {
   const client = await clientPromise;
-  const db = client.db('ats'); // same DB as insert
+  const db = client.db("ats"); // same DB as insert
 
-  const collection = db.collection('jobApplications');
+  const collection = db.collection("jobApplications");
 
   const applications = await collection
-    .find({ userId }) 
+    .find({ userId })
     .sort({ date: -1 })
     .toArray();
 
   return applications;
 }
 
-export async function getJobApplicationStats(userId: string) {
-    
-   const client = await clientPromise;
-  const db = client.db('ats'); // ← use the same DB as inserts
+export async function getJobApplicationStats(
+  userId: string,
+): Promise<DashboardStats> {
+  const client = await clientPromise;
+  const db = client.db("ats"); // ← use the same DB as inserts
 
-  const collection = db.collection('jobApplications');
+  const collection = db.collection("jobApplications");
 
   const count = await collection.countDocuments({ userId });
-  console.log('JOB APPLICATION COUNT:', count);
-  console.log('USER ID USED:', userId);
+  console.log("JOB APPLICATION COUNT:", count);
+  console.log("USER ID USED:", userId);
 
   const result = await collection
     .aggregate([
@@ -74,53 +74,55 @@ export async function getJobApplicationStats(userId: string) {
 
           applied: {
             $sum: {
-              $cond: [{ $eq: ["$status", "applied"] }, 1, 0]
-            }
+              $cond: [{ $eq: ["$status", "applied"] }, 1, 0],
+            },
           },
 
           interviews: {
             $sum: {
-              $cond: [{ $eq: ["$status", "interview"] }, 1, 0]
-            }
+              $cond: [{ $eq: ["$status", "interview"] }, 1, 0],
+            },
           },
 
           offers: {
             $sum: {
-              $cond: [{ $eq: ["$status", "offer"] }, 1, 0]
-            }
+              $cond: [{ $eq: ["$status", "offer"] }, 1, 0],
+            },
           },
 
           rejections: {
             $sum: {
-              $cond: [{ $eq: ["$status", "rejected"] }, 1, 0]
-            }
+              $cond: [{ $eq: ["$status", "rejected"] }, 1, 0],
+            },
           },
 
           withdrawn: {
             $sum: {
-              $cond: [{ $eq: ["$status", "withdrawn"] }, 1, 0]
-            }
+              $cond: [{ $eq: ["$status", "withdrawn"] }, 1, 0],
+            },
           },
 
           unknown: {
             $sum: {
-              $cond: [{ $eq: ["$status", "unknown"] }, 1, 0]
-            }
-          }
-        }
-      }
+              $cond: [{ $eq: ["$status", "unknown"] }, 1, 0],
+            },
+          },
+        },
+      },
     ])
     .toArray();
-  
+
   console.log("AGG Result: ", result);
 
-  return result[0] ?? {
-    total: 0,
-    applied: 0,
-    interviews: 0,
-    offers: 0,
-    rejections: 0,
-    withdrawn: 0,
-    unknown: 0
-  };
+  return (
+    (result[0] as DashboardStats) ?? {
+      total: 0,
+      applied: 0,
+      interviews: 0,
+      offers: 0,
+      rejections: 0,
+      withdrawn: 0,
+      unknown: 0,
+    }
+  );
 }

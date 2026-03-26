@@ -1,20 +1,20 @@
-import { ExtractedJobEvent } from '@/app/types/job';
-import OpenAI from 'openai';
+import { ExtractedJobEvent } from "@/types/job";
+import OpenAI from "openai";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 export async function extractJobEvent(
-  emailText: string
+  emailText: string,
 ): Promise<ExtractedJobEvent | null> {
   const response = await openai.responses.create({
-  model: 'gpt-3.5-turbo',
-  temperature: 0,
-  input: [
-    {
-      role: 'system',
-      content: `
+    model: "gpt-3.5-turbo",
+    temperature: 0,
+    input: [
+      {
+        role: "system",
+        content: `
      You extract job application events from emails.
 
 IMPORTANT:
@@ -69,16 +69,14 @@ Example output if NOT job-related:
   "event": null,
   "confidence": 0.95
 }
-`
-
-    },
-    {
-      role: 'user',
-      content: emailText,
-    },
-  ],
-});
-
+`,
+      },
+      {
+        role: "user",
+        content: emailText,
+      },
+    ],
+  });
 
   const text = response.output_text;
   if (!text) return null;

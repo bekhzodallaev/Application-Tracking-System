@@ -1,13 +1,12 @@
-// app/lib/session.ts
-'use server';
-import 'server-only';
-import { SignJWT, jwtVerify } from 'jose';
-import { cookies } from 'next/headers';
-import { getUsersCollection } from './db.server';
-import { ObjectId } from 'mongodb';
+"use server";
+import "server-only";
+import { SignJWT, jwtVerify } from "jose";
+import { cookies } from "next/headers";
+import { getUsersCollection } from "../db/server";
+import { ObjectId } from "mongodb";
 
 const secret = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'super-long-random-secret-min-32-chars'
+  process.env.JWT_SECRET || "super-long-random-secret-min-32-chars",
 );
 
 export interface Session {
@@ -19,22 +18,22 @@ export async function createSession(userId: string): Promise<void> {
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 
   const token = await new SignJWT({ userId })
-    .setProtectedHeader({ alg: 'HS256' })
+    .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime(expiresAt)
     .sign(secret);
 
-  (await cookies()).set('session', token, {
+  (await cookies()).set("session", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
     expires: expiresAt,
-    path: '/',
+    path: "/",
   });
 }
 
 export async function getSession(): Promise<Session | null> {
-  const cookie = (await cookies()).get('session')?.value;
+  const cookie = (await cookies()).get("session")?.value;
   if (!cookie) return null;
 
   try {
@@ -46,9 +45,8 @@ export async function getSession(): Promise<Session | null> {
 }
 
 export async function deleteSession() {
-  (await cookies()).delete('session');
+  (await cookies()).delete("session");
 }
-
 
 export async function getUserFromSession() {
   const session = await getSession();
