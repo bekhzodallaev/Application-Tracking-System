@@ -22,8 +22,13 @@ export default async function Page() {
   );
 
   if (!user) redirect("/auth/signin");
+  
+  const serializableUser = {
+    ...user,
+    _id: user._id.toString(),
+  };
 
-  return <SettingsPage user={user} refreshUser={async () => { "use server"; }} />;
+  return <SettingsPage user={serializableUser} refreshUser={async () => { "use server"; }} />;
   // Note: refreshUser should be a client-side function from context.
   // The actual SettingsPage component uses useUser() inside, 
   // so passing it as prop might be redundant if we use the context.

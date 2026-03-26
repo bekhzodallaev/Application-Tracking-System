@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { Pipeline } from "../components/Pipeline";
 import { StatusCard } from "../components/StatusCard";
