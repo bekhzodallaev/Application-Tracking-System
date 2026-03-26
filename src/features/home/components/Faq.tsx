@@ -1,10 +1,8 @@
-// app/help/page.tsx
-import { ChevronDown } from 'lucide-react';
-import { Suspense } from 'react';
+import { ChevronDown } from "lucide-react";
 
 export const metadata = {
-  title: 'JobTrack Help Center - Common Questions',
-  description: 'Find answers to the most common questions about JobTrack',
+  title: "JobTrack Help Center - Common Questions",
+  description: "Find answers to the most common questions about JobTrack",
 };
 
 const faqs = [
@@ -14,23 +12,40 @@ const faqs = [
       <>
         <p>Yes — we take data security very seriously.</p>
         <ul className="list-disc pl-6 mt-3 space-y-2">
-          <li>All data is encrypted in transit (TLS 1.3) and at rest (AES-256)</li>
-          <li>We use secure cloud providers with SOC 2 Type II, ISO 27001 certifications</li>
-          <li>Access to your data is protected with role-based access control (RBAC)</li>
-          <li>We never sell your personal data or job application information</li>
+          <li>
+            All data is encrypted in transit (TLS 1.3) and at rest (AES-256)
+          </li>
+          <li>
+            We use secure cloud providers with SOC 2 Type II, ISO 27001
+            certifications
+          </li>
+          <li>
+            Access to your data is protected with role-based access control
+            (RBAC)
+          </li>
+          <li>
+            We never sell your personal data or job application information
+          </li>
           <li>Regular independent security audits and penetration testing</li>
         </ul>
         <p className="mt-4">
-          You can read our full <a href="/security" className="text-blue-600 hover:underline">Security & Privacy Policy</a> for more details.
+          You can read our full{" "}
+          <a href="/security" className="text-blue-600 hover:underline">
+            Security & Privacy Policy
+          </a>{" "}
+          for more details.
         </p>
       </>
-    )
+    ),
   },
   {
     question: "How does email sync work?",
     answer: (
       <>
-        <p>JobTrack can connect to your Gmail / Outlook / other IMAP email accounts to automatically:</p>
+        <p>
+          JobTrack can connect to your Gmail / Outlook / other IMAP email
+          accounts to automatically:
+        </p>
         <ul className="list-disc pl-6 mt-3 space-y-2">
           <li>Find emails from companies/recruiters where you applied</li>
           <li>Detect interview invitations and rejections</li>
@@ -50,10 +65,11 @@ const faqs = [
         </div>
 
         <p className="mt-5 text-sm text-gray-600">
-          Important: We only read emails — we never send anything from your account.
+          Important: We only read emails — we never send anything from your
+          account.
         </p>
       </>
-    )
+    ),
   },
   {
     question: "Is there a mobile app?",
@@ -80,34 +96,44 @@ const faqs = [
           <div className="flex-1 bg-linear-to-br from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100">
             <h4 className="font-semibold text-lg mb-2">Android App</h4>
             <p className="text-gray-700">
-              Early development stage.<br />
+              Early development stage.
+              <br />
               Expected public release: Q2–Q3 2026
             </p>
           </div>
         </div>
 
         <p className="mt-8 text-gray-600">
-          In the meantime the web version works great on mobile — just add it to your home screen!
+          In the meantime the web version works great on mobile — just add it to
+          your home screen!
         </p>
       </>
-    )
+    ),
   },
   {
     question: "Can I export my data?",
     answer: (
       <>
-        <p className="mb-4">
-          Yes — you can export all your data anytime.
-        </p>
+        <p className="mb-4">Yes — you can export all your data anytime.</p>
 
         <div className="space-y-4 mt-6">
           <div className="bg-white border rounded-xl p-5 shadow-sm">
-            <h4 className="font-medium text-lg mb-2">Available export formats</h4>
+            <h4 className="font-medium text-lg mb-2">
+              Available export formats
+            </h4>
             <ul className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3">
-              <li className="bg-gray-50 px-4 py-2.5 rounded-lg text-center">JSON</li>
-              <li className="bg-gray-50 px-4 py-2.5 rounded-lg text-center">CSV</li>
-              <li className="bg-gray-50 px-4 py-2.5 rounded-lg text-center">PDF (timeline)</li>
-              <li className="bg-gray-50 px-4 py-2.5 rounded-lg text-center">Markdown</li>
+              <li className="bg-gray-50 px-4 py-2.5 rounded-lg text-center">
+                JSON
+              </li>
+              <li className="bg-gray-50 px-4 py-2.5 rounded-lg text-center">
+                CSV
+              </li>
+              <li className="bg-gray-50 px-4 py-2.5 rounded-lg text-center">
+                PDF (timeline)
+              </li>
+              <li className="bg-gray-50 px-4 py-2.5 rounded-lg text-center">
+                Markdown
+              </li>
             </ul>
           </div>
 
@@ -124,16 +150,20 @@ const faqs = [
         </div>
 
         <p className="mt-6 text-sm text-gray-500 italic">
-          Processing usually takes 10–90 seconds depending on how much data you have.
+          Processing usually takes 10–90 seconds depending on how much data you
+          have.
         </p>
       </>
-    )
+    ),
   },
 ];
 
 export default function Faq() {
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" id='faq'>
+    <div
+      className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8"
+      id="faq"
+    >
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="text-center mb-16">
@@ -146,7 +176,8 @@ export default function Faq() {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Everything you need to know about JobTrack.
             <br className="hidden sm:block" />
-            Can't find the answer you're looking for? Reach out to our support team.
+            Can't find the answer you're looking for? Reach out to our support
+            team.
           </p>
         </div>
 
@@ -171,9 +202,7 @@ export default function Faq() {
 
         {/* Still need help? */}
         <div className="mt-16 text-center">
-          <p className="text-gray-600 mb-6 text-lg">
-            Still have questions?
-          </p>
+          <p className="text-gray-600 mb-6 text-lg">Still have questions?</p>
           <a
             href="mailto:support@jobtrack.app"
             className="inline-flex items-center gap-2 bg-blue-600 text-white px-8 py-4 rounded-xl font-medium hover:bg-blue-700 transition-colors text-lg shadow-lg shadow-blue-200/50"

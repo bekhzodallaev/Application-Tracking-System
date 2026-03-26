@@ -1,24 +1,24 @@
-import React from 'react'
-import DashboardAnalytics from "@/public/landing/dashboard_analytics.png"
-import Image from 'next/image';
-
+import Image from "next/image";
 
 const AboutUs = () => {
   return (
-    <section id='aboutus' className="py-16 md:py-24 bg-linear-to-b from-teal-50 via-white to-white">
+    <section
+      id="aboutus"
+      className="py-16 md:py-24 bg-linear-to-b from-teal-50 via-white to-white"
+    >
       <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-12">
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left - Image/Mockup */}
           <div className="relative  max-w-[640px] lg:max-w-none order-2 lg:order-1">
             <div className="relative rounded-3xl overflow-hidden shadow-2xl shadow-teal-200/40 border border-teal-100">
               <div className="relative w-full h-[420px] md:h-[520px] lg:h-[600px]">
-              <Image
-                src={DashboardAnalytics} // ← put your screenshot here
-                alt="JobTrack Dashboard"
-                className="object-contain"
+                <Image
+                  src="/landing/dashboard_analytics.png"
+                  alt="JobTrack Dashboard"
+                  className="object-contain"
                   priority
                   fill
-              />
+                />
               </div>
 
               {/* Floating badge effect */}
@@ -46,27 +46,33 @@ const AboutUs = () => {
 
             <div className="space-y-6 text-lg text-gray-700 leading-relaxed">
               <p>
-                JobTrack was born out of frustration. We saw talented candidates losing opportunities
-                not because they weren't qualified, but because the process of tracking applications
-                across dozens of platforms was fundamentally broken.
+                JobTrack was born out of frustration. We saw talented candidates
+                losing opportunities not because they weren't qualified, but
+                because the process of tracking applications across dozens of
+                platforms was fundamentally broken.
               </p>
 
               <p>
-                Our mission is to simplify the complex journey from applicant to employee.
-                We build tools that provide clarity, automate the mundane, and give job seekers
-                the data they need to negotiate with confidence.
+                Our mission is to simplify the complex journey from applicant to
+                employee. We build tools that provide clarity, automate the
+                mundane, and give job seekers the data they need to negotiate
+                with confidence.
               </p>
             </div>
 
             {/* Stats */}
             <div className="mt-12 grid grid-cols-2 gap-8 max-w-md">
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-teal-600">2k+</div>
+                <div className="text-4xl md:text-5xl font-bold text-teal-600">
+                  2k+
+                </div>
                 <p className="mt-2 text-gray-600 font-medium">JOBS TRACKED</p>
               </div>
 
               <div className="text-center">
-                <div className="text-4xl md:text-5xl font-bold text-teal-600">50+</div>
+                <div className="text-4xl md:text-5xl font-bold text-teal-600">
+                  50+
+                </div>
                 <p className="mt-2 text-gray-600 font-medium">OFFERS LANDED</p>
               </div>
             </div>
@@ -74,7 +80,7 @@ const AboutUs = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default AboutUs
+export default AboutUs;
