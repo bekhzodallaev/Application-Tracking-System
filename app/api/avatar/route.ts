@@ -1,54 +1,49 @@
-import cloudinary from "@/app/lib/cloudinary";
+import cloudinary from "@/lib/cloudinary";
 import { NextResponse } from "next/server";
-import { getSession, getUserFromSession } from "@/app/lib/session";
-import clientPromise from '@/app/lib/mongodb';
-import { error } from "console";
-import { getUsersCollection } from "@/app/lib/db.server";
+import { getSession } from "@/lib/session";
+import { getUsersCollection } from "@/lib/db.server";
 import { ObjectId } from "mongodb";
 
-
 export async function POST(req: Request) {
-    
-    const formData = await req.formData();
-    const file = formData.get('file') as File;
-    const bytes = await file.arrayBuffer();
-    const buffer = Buffer.from(bytes);
+  const formData = await req.formData();
+  const file = formData.get("file") as File;
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
 
-     if (!file) {
-    return NextResponse.json({ error: 'No file' }, { status: 400 });
+  if (!file) {
+    return NextResponse.json({ error: "No file" }, { status: 400 });
   }
 
   if (file.size > 5 * 1024 * 1024) {
-    return NextResponse.json({ error: 'File too large' }, { status: 400 });
+    return NextResponse.json({ error: "File too large" }, { status: 400 });
   }
 
-   const session = await getSession();
-    if (!session?.userId) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  
-    const users = await getUsersCollection();
-  
+  const session = await getSession();
+  if (!session?.userId)
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const result = await cloudinary.uploader.upload(
-        `data:${file.type};base64,${buffer.toString('base64')}`,
-        {
-            folder: 'avatars',
-        }
-    );
+  const users = await getUsersCollection();
 
-    await users.updateOne(
-        { _id: new ObjectId(session.userId) },
-        {
-            $set: {
-                avatar: {
-                    url: result.secure_url,
-                    publicId: result.public_id,
-                },
-        
-            },
-        }
-    );
-    return NextResponse.json({
-        publicId: result.public_id,
-        url:result.secure_url,
-    })
+  const result = await cloudinary.uploader.upload(
+    `data:${file.type};base64,${buffer.toString("base64")}`,
+    {
+      folder: "avatars",
+    },
+  );
+
+  await users.updateOne(
+    { _id: new ObjectId(session.userId) },
+    {
+      $set: {
+        avatar: {
+          url: result.secure_url,
+          publicId: result.public_id,
+        },
+      },
+    },
+  );
+  return NextResponse.json({
+    publicId: result.public_id,
+    url: result.secure_url,
+  });
 }
