@@ -112,4 +112,4 @@ Add your API key to `.env.local`. The app uses structured outputs for reliable J
 Contributions welcome! Especially for:
 - Better email parsing prompts
 - Additional providers (Outlook)
-- UI/UX polish
+- UI/UX polish.
