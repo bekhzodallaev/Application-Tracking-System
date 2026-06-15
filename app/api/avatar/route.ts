@@ -6,11 +6,9 @@ import { ObjectId } from "mongodb";
 
 export async function POST(req: Request) {
   const formData = await req.formData();
-  const file = formData.get("file") as File;
-  const bytes = await file.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+  const file = formData.get("file");
 
-  if (!file) {
+  if (!(file instanceof File)) {
     return NextResponse.json({ error: "No file" }, { status: 400 });
   }
 
@@ -23,6 +21,8 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const users = await getUsersCollection();
+  const bytes = await file.arrayBuffer();
+  const buffer = Buffer.from(bytes);
 
   const result = await cloudinary.uploader.upload(
     `data:${file.type};base64,${buffer.toString("base64")}`,
@@ -43,6 +43,7 @@ export async function POST(req: Request) {
     },
   );
   return NextResponse.json({
+    avatarPublicId: result.public_id,
     publicId: result.public_id,
     url: result.secure_url,
   });

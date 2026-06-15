@@ -57,55 +57,16 @@ const faqs = [
           <h4 className="font-medium mb-3">How to connect your email:</h4>
           <ol className="list-decimal pl-5 space-y-2 text-gray-700">
             <li>Go to Settings → Email Sync</li>
-            <li>Click "Connect new email account"</li>
+            <li>Click &quot;Connect new email account&quot;</li>
             <li>Choose your provider (Gmail, Outlook, etc.)</li>
             <li>Grant the necessary read-only permissions</li>
-            <li>That's it! Sync starts automatically</li>
+            <li>That&apos;s it! Sync starts automatically</li>
           </ol>
         </div>
 
         <p className="mt-5 text-sm text-gray-600">
           Important: We only read emails — we never send anything from your
           account.
-        </p>
-      </>
-    ),
-  },
-  {
-    question: "Is there a mobile app?",
-    answer: (
-      <>
-        <p className="mb-4">
-          <strong>Yes — but we're still in active development.</strong>
-        </p>
-
-        <div className="flex flex-col sm:flex-row gap-6 mt-6">
-          <div className="flex-1 bg-linear-to-br from-blue-50 to-indigo-50 p-6 rounded-2xl border border-blue-100">
-            <h4 className="font-semibold text-lg mb-2">iOS App</h4>
-            <p className="text-gray-700 mb-4">
-              Currently in closed beta (TestFlight). Want to join?
-            </p>
-            <a
-              href="mailto:beta@jobtrack.app?subject=Interested%20in%20iOS%20beta"
-              className="inline-block bg-blue-600 text-white px-5 py-2.5 rounded-lg font-medium hover:bg-blue-700 transition-colors"
-            >
-              Request Beta Access
-            </a>
-          </div>
-
-          <div className="flex-1 bg-linear-to-br from-purple-50 to-pink-50 p-6 rounded-2xl border border-purple-100">
-            <h4 className="font-semibold text-lg mb-2">Android App</h4>
-            <p className="text-gray-700">
-              Early development stage.
-              <br />
-              Expected public release: Q2–Q3 2026
-            </p>
-          </div>
-        </div>
-
-        <p className="mt-8 text-gray-600">
-          In the meantime the web version works great on mobile — just add it to
-          your home screen!
         </p>
       </>
     ),
@@ -141,7 +102,7 @@ const faqs = [
             <h4 className="font-medium text-lg mb-2">How to export</h4>
             <ol className="list-decimal pl-5 space-y-2 mt-3 text-gray-700">
               <li>Settings → Privacy & Data</li>
-              <li>Scroll to "Export your data"</li>
+              <li>Scroll to &quot;Export your data&quot;</li>
               <li>Select data you want to include</li>
               <li>Choose format</li>
               <li>Click Export → file will be prepared and downloaded</li>
@@ -176,7 +137,7 @@ export default function Faq() {
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
             Everything you need to know about JobTrack.
             <br className="hidden sm:block" />
-            Can't find the answer you're looking for? Reach out to our support
+            Can&apos;t find the answer you&apos;re looking for? Reach out to our support
             team.
           </p>
         </div>

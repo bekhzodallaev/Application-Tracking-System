@@ -4,18 +4,36 @@ import React, { useState, useEffect } from "react";
 import { FcInvite } from "react-icons/fc";
 import { FaUserCircle } from "react-icons/fa";
 import { CldImage } from "next-cloudinary";
+import { useRouter } from "next/navigation";
+import { useUser } from "@/context/UserContext";
+import { CheckCircle2, XCircle } from "lucide-react";
+
+type SettingsUser = {
+  name: string;
+  email: string;
+  avatarPublicId?: string | null;
+};
+
+type FeedbackModal = {
+  type: "success" | "error";
+  title: string;
+  message: string;
+} | null;
 
 interface SettingsPageProps {
-  user: any;
-  refreshUser: () => Promise<void>;
+  initialUser: SettingsUser;
 }
 
-export const SettingsPage = ({ user, refreshUser }: SettingsPageProps) => {
+export const SettingsPage = ({ initialUser }: SettingsPageProps) => {
+  const router = useRouter();
+  const { user, refreshUser } = useUser();
+  const currentUser = user ?? initialUser;
   const [syncing, setSyncing] = useState(false);
   const [isConnected, setIsConnected] = useState(false);
   const [syncEnabled, setSyncEnabled] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const [nameInput, setNameInput] = useState(user?.name || "");
+  const [nameInput, setNameInput] = useState(currentUser?.name || "");
+  const [feedbackModal, setFeedbackModal] = useState<FeedbackModal>(null);
 
   useEffect(() => {
     async function loadSettings() {
@@ -29,27 +47,64 @@ export const SettingsPage = ({ user, refreshUser }: SettingsPageProps) => {
     loadSettings();
   }, []);
 
+  useEffect(() => {
+    setNameInput(currentUser?.name || "");
+  }, [currentUser?.name]);
+
   const saveName = async () => {
-    await fetch("/api/settings/gmail", {
+    const res = await fetch("/api/settings/gmail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name: nameInput }),
+      body: JSON.stringify({ name: nameInput.trim() }),
     });
+
+    if (!res.ok) {
+      setFeedbackModal({
+        type: "error",
+        title: "Name not updated",
+        message: "Could not update your name. Please try again.",
+      });
+      return;
+    }
+
     await refreshUser();
-    alert("Name updated successfully");
+    router.refresh();
+    setFeedbackModal({
+      type: "success",
+      title: "Name updated",
+      message: "Your profile name has been updated successfully.",
+    });
   };
 
   const uploadAvatar = async (file: File) => {
     setUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-    await fetch("/api/avatar", {
-      method: "POST",
-      body: formData,
-    });
-    await refreshUser();
-    setUploading(false);
-    alert("Avatar has been set successfully!");
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await fetch("/api/avatar", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!res.ok) {
+        setFeedbackModal({
+          type: "error",
+          title: "Photo not uploaded",
+          message: "Could not upload your profile photo. Please try another image.",
+        });
+        return;
+      }
+
+      await refreshUser();
+      router.refresh();
+      setFeedbackModal({
+        type: "success",
+        title: "Photo updated",
+        message: "Your profile photo has been updated successfully.",
+      });
+    } finally {
+      setUploading(false);
+    }
   };
 
   return (
@@ -74,9 +129,9 @@ export const SettingsPage = ({ user, refreshUser }: SettingsPageProps) => {
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 p-6 bg-gray-50 rounded-2xl border border-gray-100">
             <div className="flex items-center gap-5">
               <div className="relative h-20 w-20 rounded-2xl overflow-hidden shadow-md shrink-0 animate-in zoom-in-50 duration-500">
-                {user?.avatarPublicId ? (
+                {currentUser?.avatarPublicId ? (
                   <CldImage
-                    src={user.avatarPublicId}
+                    src={currentUser.avatarPublicId}
                     alt="Profile avatar"
                     fill
                     className="object-cover"
@@ -226,10 +281,27 @@ export const SettingsPage = ({ user, refreshUser }: SettingsPageProps) => {
                   onClick={async () => {
                     setSyncing(true);
                     try {
-                      await fetch("/api/gmail/sync", { method: "POST" });
-                      alert("Sync process started successfully");
+                      const res = await fetch("/api/gmail/sync", { method: "POST" });
+                      if (!res.ok) {
+                        setFeedbackModal({
+                          type: "error",
+                          title: "Sync not started",
+                          message: "Could not start Gmail sync. Please try again.",
+                        });
+                        return;
+                      }
+                      setFeedbackModal({
+                        type: "success",
+                        title: "Sync started",
+                        message: "Gmail sync has started successfully.",
+                      });
                     } catch (err) {
                       console.error(err);
+                      setFeedbackModal({
+                        type: "error",
+                        title: "Sync not started",
+                        message: "Something went wrong while starting Gmail sync.",
+                      });
                     } finally {
                       setSyncing(false);
                     }
@@ -278,6 +350,59 @@ export const SettingsPage = ({ user, refreshUser }: SettingsPageProps) => {
           Save Dashboard Settings
         </button>
       </div>
+
+      {feedbackModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="settings-feedback-title"
+          onClick={() => setFeedbackModal(null)}
+        >
+          <div
+            className="w-full max-w-md rounded-3xl bg-white p-7 shadow-2xl"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div
+              className={`mx-auto flex h-14 w-14 items-center justify-center rounded-full ${
+                feedbackModal.type === "success"
+                  ? "bg-green-100 text-green-600"
+                  : "bg-red-100 text-red-600"
+              }`}
+            >
+              {feedbackModal.type === "success" ? (
+                <CheckCircle2 className="h-8 w-8" />
+              ) : (
+                <XCircle className="h-8 w-8" />
+              )}
+            </div>
+
+            <div className="mt-5 text-center">
+              <h3
+                id="settings-feedback-title"
+                className="text-2xl font-extrabold text-gray-900"
+              >
+                {feedbackModal.title}
+              </h3>
+              <p className="mt-3 text-sm font-medium leading-6 text-gray-500">
+                {feedbackModal.message}
+              </p>
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setFeedbackModal(null)}
+              className={`mt-7 w-full rounded-2xl px-5 py-3.5 font-bold text-white transition-all active:scale-[0.98] ${
+                feedbackModal.type === "success"
+                  ? "bg-green-600 hover:bg-green-700"
+                  : "bg-red-600 hover:bg-red-700"
+              }`}
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -22,6 +22,9 @@ export const ApplicationsPage = ({
   const [visibleCount, setVisibleCount] = useState(6);
   const [selectedStatus, setSelectedStatus] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const activeApplications = jobApplications.filter(
+    (app) => app.status !== "rejected",
+  ).length;
 
   const filteredApplications = jobApplications.filter((app) => {
     const matchesStatus = selectedStatus === "all" || app.status === selectedStatus;
@@ -42,44 +45,46 @@ export const ApplicationsPage = ({
         </p>
       </div>
 
-      {/* Stats Cards */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <StatusCard title="Total Applications" value={stats.total} icon={FiUsers} />
-        <StatusCard title="Active Applications" value={stats.total} icon={FiCheckCircle} />
-        <StatusCard title="Interviews Scheduled" value={stats.interviews} icon={FiCalendar} />
-      </section>
+      <div className="sticky top-16 md:top-0 z-30 -mx-4 space-y-6 bg-gray-50/95 px-4 py-4 backdrop-blur-md md:-mx-8 md:px-8 lg:-mx-10 lg:px-10">
+        {/* Stats Cards */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <StatusCard title="Total Applications" value={stats.total} icon={FiUsers} />
+          <StatusCard title="Active Applications" value={activeApplications} icon={FiCheckCircle} />
+          <StatusCard title="Interviews Scheduled" value={stats.interviews} icon={FiCalendar} />
+        </section>
 
-      {/* Controls */}
-      <section className="flex flex-col md:flex-row gap-4">
-        {/* Search */}
-        <div className="relative flex-1 group">
-          <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
-          <input
-            placeholder="Search by company or role..."
-            className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white border border-gray-100 shadow-sm 
-              focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
+        {/* Controls */}
+        <section className="flex flex-col md:flex-row gap-4">
+          {/* Search */}
+          <div className="relative flex-1 group">
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
+            <input
+              placeholder="Search by company or role..."
+              className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white border border-gray-100 shadow-sm 
+                focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
 
-        {/* Select */}
-        <select
-          className="px-4 py-3.5 rounded-2xl bg-white border border-gray-100 shadow-sm 
-            focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all
-            w-full md:w-64 font-semibold text-gray-700 cursor-pointer"
-          value={selectedStatus}
-          onChange={(e) => setSelectedStatus(e.target.value)}
-        >
-          <option value="all">All Statuses</option>
-          <option value="interview">Interviewing</option>
-          <option value="applied">Applied</option>
-          <option value="offer">Offer</option>
-          <option value="rejected">Rejected</option>
-          <option value="withdrawn">Withdrawn</option>
-          <option value="unknown">Unknown</option>
-        </select>
-      </section>
+          {/* Select */}
+          <select
+            className="px-4 py-3.5 rounded-2xl bg-white border border-gray-100 shadow-sm 
+              focus:border-blue-500 focus:ring-4 focus:ring-blue-500/5 outline-none transition-all
+              w-full md:w-64 font-semibold text-gray-700 cursor-pointer"
+            value={selectedStatus}
+            onChange={(e) => setSelectedStatus(e.target.value)}
+          >
+            <option value="all">All Statuses</option>
+            <option value="interview">Interviewing</option>
+            <option value="applied">Applied</option>
+            <option value="offer">Offer</option>
+            <option value="rejected">Rejected</option>
+            <option value="withdrawn">Withdrawn</option>
+            <option value="unknown">Unknown</option>
+          </select>
+        </section>
+      </div>
 
       {/* Applications List */}
       <section className="grid grid-cols-1 gap-4">

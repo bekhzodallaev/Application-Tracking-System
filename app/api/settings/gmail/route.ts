@@ -35,7 +35,7 @@ export async function POST(request: Request) {
 
   const users = await getUsersCollection();
 
-  const updateFields: any = {};
+  const updateFields: Record<string, boolean | string> = {};
 
   if (typeof syncEnabled === "boolean") {
     updateFields["gmail.syncEnabled"] = syncEnabled;

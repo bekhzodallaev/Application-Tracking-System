@@ -6,6 +6,7 @@ import Pricing from "../components/Pricing";
 import AboutUs from "../components/AboutUs";
 import Testimonials from "../components/Testimonials";
 import Faq from "../components/Faq";
+import ScrollToggle from "../components/ScrollToggle";
 
 export const HomePage = () => {
   return (
@@ -19,6 +20,7 @@ export const HomePage = () => {
         <Testimonials />
         <Faq />
       </div>
+      <ScrollToggle />
       <Footer />
     </div>
   );

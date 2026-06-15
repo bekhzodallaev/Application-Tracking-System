@@ -16,7 +16,7 @@ export default async function Layout({
   const users = await getUsersCollection();
   const user = await users.findOne(
     { _id: new ObjectId(session.userId) },
-    { projection: { name: 1, email: 1, avatarPublicId: 1 } },
+    { projection: { name: 1, email: 1, avatar: 1 } },
   );
 
   if (!user) redirect("/auth/signin");
@@ -24,7 +24,7 @@ export default async function Layout({
   const userData = {
     name: user.name,
     email: user.email,
-    avatarPublicId: user.avatarPublicId,
+    avatarPublicId: user.avatar?.publicId ?? null,
   };
 
   return <DashboardLayout user={userData}>{children}</DashboardLayout>;

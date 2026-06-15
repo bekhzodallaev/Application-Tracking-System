@@ -4,6 +4,7 @@ import React from "react";
 import { Sidebar } from "./Sidebar";
 import { MobileSidebar } from "./MobileSidebar";
 import { AuthSync } from "./AuthSync";
+import { useUser } from "@/context/UserContext";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -16,17 +17,19 @@ interface DashboardLayoutProps {
 
 export const DashboardLayout = ({ children, user }: DashboardLayoutProps) => {
   const year = new Date().getFullYear();
+  const { user: contextUser } = useUser();
+  const currentUser = contextUser ?? user;
 
   return (
     <div className="flex h-screen bg-gray-50 overflow-hidden font-sans text-gray-900">
       {/* Desktop Sidebar */}
       <aside className="hidden md:block w-72 border-r border-gray-200 bg-white sticky top-0 h-screen shadow-sm">
-        <Sidebar user={user} />
+        <Sidebar user={currentUser} />
       </aside>
 
       <main className="flex-1 overflow-y-auto overflow-x-hidden relative">
         <div className="md:hidden sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-100 px-4 py-3 shadow-sm">
-          <MobileSidebar user={user} />
+          <MobileSidebar user={currentUser} />
         </div>
 
         <div className="p-4 md:p-8 lg:p-10 max-w-7xl mx-auto">

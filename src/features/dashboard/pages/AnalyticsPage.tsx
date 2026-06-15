@@ -5,6 +5,7 @@ import { HiOutlineDownload } from "react-icons/hi";
 import { FiUsers, FiMessageSquare, FiCheckCircle } from "react-icons/fi";
 import { MdClose } from "react-icons/md";
 import { StatusCard } from "../components/StatusCard";
+import { AvgTimeItem, DashboardStats, FunnelItem, JobRoleItem } from "../types";
 import {
   BarChart,
   Bar,
@@ -20,13 +21,17 @@ import {
 /* ---------- COLORS ---------- */
 const FUNNEL_COLORS = ["#EFF6FF", "#DBEAFE", "#BFDBFE", "#93C5FD", "#60A5FA"];
 const ROLE_COLORS = ["#F87171", "#60A5FA", "#4ADE80", "#FB923C"];
+const MAX_VISIBLE_ROLE_ROWS = 5;
 
 interface AnalyticsPageProps {
-  stats: any;
-  funnelData: any[];
-  jobRole: any[];
-  avgTimeData: any[];
+  stats: DashboardStats;
+  funnelData: FunnelItem[];
+  jobRole: JobRoleItem[];
+  avgTimeData: AvgTimeItem[];
 }
+
+const getVerticalChartHeight = (itemCount: number) =>
+  Math.max(300, itemCount * 58 + 40);
 
 export const AnalyticsPage = ({
   stats,
@@ -34,6 +39,14 @@ export const AnalyticsPage = ({
   jobRole,
   avgTimeData,
 }: AnalyticsPageProps) => {
+  const funnelChartHeight = getVerticalChartHeight(funnelData.length);
+  const roleChartHeight = getVerticalChartHeight(jobRole.length);
+  const roleChartViewportHeight = Math.min(
+    roleChartHeight,
+    getVerticalChartHeight(MAX_VISIBLE_ROLE_ROWS),
+  );
+  const hasScrollableRoles = jobRole.length > MAX_VISIBLE_ROLE_ROWS;
+
   return (
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700">
       {/* Header */}
@@ -62,23 +75,29 @@ export const AnalyticsPage = ({
         <StatusCard title="Rejections" value={stats.rejections} icon={MdClose} />
       </div>
 
-      {/* Charts Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {/* Charts */}
+      <div className="grid grid-cols-1 gap-8">
         {/* Funnel */}
-        <div className="p-8 bg-white rounded-3xl border border-gray-100 shadow-sm space-y-6">
+        <div className="p-6 md:p-8 bg-white rounded-3xl border border-gray-100 shadow-sm space-y-6 overflow-hidden">
           <h2 className="text-xl font-bold text-gray-900 tracking-tight">Application Funnel</h2>
 
-          <div className="h-[300px] w-full">
+          <div className="w-full" style={{ height: funnelChartHeight }}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={funnelData} layout="vertical">
+              <BarChart
+                data={funnelData}
+                layout="vertical"
+                margin={{ top: 8, right: 96, left: 12, bottom: 8 }}
+                barCategoryGap={18}
+              >
                 <XAxis type="number" hide />
                 <YAxis
                   type="category"
                   dataKey="stage"
-                  width={100}
+                  width={120}
                   tick={{ fontSize: 12, fontWeight: 600, fill: "#64748b" }}
                   axisLine={false}
                   tickLine={false}
+                  interval={0}
                 />
                 <Bar dataKey="percent" radius={[0, 8, 8, 0]} barSize={32}>
                   {funnelData.map((_, i) => (
@@ -90,15 +109,16 @@ export const AnalyticsPage = ({
                     />
                   ))}
                   <LabelList
-                    content={({ x, y, width, index }) => {
+                    content={({ x, y, width, height, index }) => {
                       const item = funnelData[index!];
                       return (
                         <text
                           x={Number(x) + Number(width) + 12}
-                          y={Number(y) + 20}
+                          y={Number(y) + Number(height) / 2}
                           fill="#1e293b"
                           fontSize={12}
                           fontWeight={700}
+                          dominantBaseline="middle"
                         >
                           {item.value} ({item.percent}%)
                         </text>
@@ -112,44 +132,63 @@ export const AnalyticsPage = ({
         </div>
 
         {/* Roles */}
-        <div className="p-8 bg-white rounded-3xl border border-gray-100 shadow-sm space-y-6">
-          <h2 className="text-xl font-bold text-gray-900 tracking-tight">Highest Demand Roles</h2>
+        <div className="p-6 md:p-8 bg-white rounded-3xl border border-gray-100 shadow-sm space-y-6 overflow-hidden">
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+            <h2 className="text-xl font-bold text-gray-900 tracking-tight">Highest Demand Roles</h2>
+            {hasScrollableRoles && (
+              <span className="text-sm font-semibold text-gray-400">
+                Scroll to see all {jobRole.length} roles
+              </span>
+            )}
+          </div>
 
-          <div className="h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={jobRole} layout="vertical">
-                <XAxis type="number" hide />
-                <YAxis
-                  type="category"
-                  dataKey="role"
-                  width={120}
-                  tick={{ fontSize: 12, fontWeight: 600, fill: "#64748b" }}
-                  axisLine={false}
-                  tickLine={false}
-                />
-                <Bar dataKey="percent" radius={[0, 8, 8, 0]} barSize={32}>
-                  {jobRole.map((_, i) => (
-                    <Cell key={i} fill={ROLE_COLORS[i % ROLE_COLORS.length]} />
-                  ))}
-                  <LabelList
-                    content={({ x, y, width, index }) => {
-                      const item = jobRole[index!];
-                      return (
-                        <text
-                          x={Number(x) + Number(width) + 12}
-                          y={Number(y) + 20}
-                          fill="#1e293b"
-                          fontSize={12}
-                          fontWeight={700}
-                        >
-                          {item.percent}%
-                        </text>
-                      );
-                    }}
+          <div
+            className={hasScrollableRoles ? "overflow-y-auto pr-2" : ""}
+            style={{ height: roleChartViewportHeight }}
+          >
+            <div className="w-full" style={{ height: roleChartHeight }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={jobRole}
+                  layout="vertical"
+                  margin={{ top: 8, right: 72, left: 12, bottom: 8 }}
+                  barCategoryGap={18}
+                >
+                  <XAxis type="number" hide />
+                  <YAxis
+                    type="category"
+                    dataKey="role"
+                    width={180}
+                    tick={{ fontSize: 12, fontWeight: 600, fill: "#64748b" }}
+                    axisLine={false}
+                    tickLine={false}
+                    interval={0}
                   />
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
+                  <Bar dataKey="percent" radius={[0, 8, 8, 0]} barSize={32}>
+                    {jobRole.map((_, i) => (
+                      <Cell key={i} fill={ROLE_COLORS[i % ROLE_COLORS.length]} />
+                    ))}
+                    <LabelList
+                      content={({ x, y, width, height, index }) => {
+                        const item = jobRole[index!];
+                        return (
+                          <text
+                            x={Number(x) + Number(width) + 12}
+                            y={Number(y) + Number(height) / 2}
+                            fill="#1e293b"
+                            fontSize={12}
+                            fontWeight={700}
+                            dominantBaseline="middle"
+                          >
+                            {item.percent}%
+                          </text>
+                        );
+                      }}
+                    />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </div>
         </div>
       </div>
